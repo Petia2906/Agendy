@@ -122,8 +122,8 @@ GET  /events/{eventId}/analytics
 
 ## Автори
 
-Полина Станева www.linkedin.com/in/polina-staneva-0b7aa2324
-Петя Хрусанова www.linkedin.com/in/petya-hrusanova-455742372
+- Полина Станева – https://www.linkedin.com/in/polina-staneva-0b7aa2324  
+- Петя Хрусанова – https://www.linkedin.com/in/petya-hrusanova-455742372
 
 ---
 
