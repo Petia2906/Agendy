@@ -24,7 +24,7 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             User registeredUser = userService.registerUser(request);
-            //token?
+            // JWT токен по-нататък
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully with ID: " + registeredUser.getId());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -35,7 +35,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             User user = userService.loginUser(request);
-            // Тук по-нататък ще генерираме JWT токен.
+            // JWT токен по-нататък
             return ResponseEntity.ok("Login successful! Welcome, " + user.getName());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
