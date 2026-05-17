@@ -6,8 +6,8 @@ import fmi.eventmanager.Agendy.model.dto.FeedbackResponse;
 import fmi.eventmanager.Agendy.model.entity.Feedback;
 import fmi.eventmanager.Agendy.model.entity.Ticket;
 import fmi.eventmanager.Agendy.model.entity.TicketStatus;
-import fmi.eventmanager.Agendy.repository.FeedbackRepository;
-import fmi.eventmanager.Agendy.repository.TicketRepository;
+import fmi.eventmanager.Agendy.service.FeedbackService;
+import fmi.eventmanager.Agendy.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/events/{eventId}")
 public class FeedbackController {
 
-    private final FeedbackRepository feedbackRepository;
-    private final TicketRepository ticketRepository;
+    private final FeedbackService feedbackService;
+    private final TicketService ticketService;
 
-    public FeedbackController(FeedbackRepository feedbackRepository, TicketRepository ticketRepository) {
-        this.feedbackRepository = feedbackRepository;
-        this.ticketRepository = ticketRepository;
+    public FeedbackController(FeedbackService feedbackService, TicketService ticketService) {
+        this.feedbackService = feedbackService;
+        this.ticketService = ticketService;
     }
 
     @PostMapping("/feedback")
@@ -40,7 +40,6 @@ public class FeedbackController {
             @RequestParam Long userId,
             @RequestBody FeedbackRequest dto) {
         try {
-            // fix magic numbers later, dto to entity conversion and so on
             if (dto.getRating() < 1 || dto.getRating() > 5) {
                 return ResponseEntity.badRequest().body("Rating must be between 1 and 5");
             }
@@ -49,7 +48,7 @@ public class FeedbackController {
             feedback.setRating(dto.getRating());
             feedback.setComment(dto.getComment());
 
-            Feedback saved = feedbackRepository.save(feedback);
+            Feedback saved = feedbackService.saveFeedback(feedback);
             return ResponseEntity.status(HttpStatus.CREATED).body(convertToResponse(saved, eventId, userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -58,7 +57,7 @@ public class FeedbackController {
 
     @GetMapping("/feedback")
     public ResponseEntity<List<FeedbackResponse>> getEventFeedback(@PathVariable Long eventId) {
-        List<Feedback> feedbacks = feedbackRepository.findByEventId(eventId);
+        List<Feedback> feedbacks = feedbackService.getFeedbacksByEvent(eventId);
 
         List<FeedbackResponse> response = feedbacks.stream()
                 .map(f -> convertToResponse(f, eventId, f.getUser() != null ? f.getUser().getId() : null))
@@ -69,12 +68,8 @@ public class FeedbackController {
 
     @GetMapping("/analytics")
     public ResponseEntity<EventAnalyticsResponse> getEventAnalytics(@PathVariable Long eventId) {
-        List<Feedback> feedbacks = feedbackRepository.findByEventId(eventId);
-
-        //fix later when you have event logic
-        List<Ticket> tickets = ticketRepository.findAll().stream()
-                .filter(t -> t.getEvent() != null && t.getEvent().getId().equals(eventId))
-                .collect(Collectors.toList());
+        List<Feedback> feedbacks = feedbackService.getFeedbacksByEvent(eventId);
+        List<Ticket> tickets = ticketService.getTicketsByEvent(eventId);
 
         long soldTicketsCount = tickets.stream()
                 .filter(t -> t.getStatus() == TicketStatus.PURCHASED)
@@ -96,10 +91,9 @@ public class FeedbackController {
         analytics.setTotalRevenue(totalRevenue);
         analytics.setAverageRating(Math.round(avgRating * 10.0) / 10.0);
         analytics.setTotalFeedbacksCount(feedbacks.size());
+
         return ResponseEntity.ok(analytics);
     }
-    // fix later, make appropriate constructor
-    // make it PRETYYY
 
     private FeedbackResponse convertToResponse(Feedback feedback, Long eventId, Long userId) {
         FeedbackResponse dto = new FeedbackResponse();
