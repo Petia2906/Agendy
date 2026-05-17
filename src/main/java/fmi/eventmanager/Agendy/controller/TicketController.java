@@ -39,7 +39,6 @@ public class TicketController {
 
             Ticket purchased = ticketService.purchaseTicket(eventId, userId, ticketEntity);
 
-            // Връщаме безопасно ResponseDTO
             return ResponseEntity.status(HttpStatus.CREATED).body(convertToResponseDTO(purchased));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
