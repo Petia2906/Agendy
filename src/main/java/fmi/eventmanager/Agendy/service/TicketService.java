@@ -50,4 +50,12 @@ public class TicketService {
         ticket.setStatus(TicketStatus.CANCELLED);
         return ticketRepository.save(ticket);
     }
+
+    public List<Ticket> getTicketsByEvent(Long eventId) {
+        /* Will uncomment when event is added
+        return ticketRepository.findAll().stream()
+                .filter(t -> t.getEvent() != null && t.getEvent().getId().equals(eventId))
+                .collect(Collectors.toList());*/
+        return null;
+    }
 }
