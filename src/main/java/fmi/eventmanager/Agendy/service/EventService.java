@@ -16,10 +16,8 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
-
     }
 
     public EventResponse createEvent(CreateEventRequest request, Long organizerId) {

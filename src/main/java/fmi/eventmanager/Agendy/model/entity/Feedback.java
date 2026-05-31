@@ -21,9 +21,9 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "event_id", nullable = false)
-    //private Event event;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -53,14 +53,14 @@ public class Feedback {
         this.id = id;
     }
 
-    /*public Event getEvent() {
+    public Event getEvent() {
         return event;
-    }*/
+    }
 
-    /*public void setEvent(Event event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
-*/
+
     public User getUser() {
         return user;
     }

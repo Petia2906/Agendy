@@ -1,7 +1,13 @@
 package fmi.eventmanager.Agendy.model.entity;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,7 +24,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="organizer_id", nullable = false)
+    @Column(name = "organizer_id", nullable = false)
     private Long organizerId; //foreign key
 
     @NotBlank
@@ -45,11 +51,12 @@ public class Event {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    protected Event() {}
+    protected Event() { }
 
-    public Event(Long organizerId, String title, String description, String venue, LocalDateTime eventDate, int capacity, EventStatus status) {
-        if(title == null || title.isBlank()) throw new IllegalArgumentException("title is required");
-        if(title.length()> 100) throw new IllegalArgumentException("title must be less than 100 characters");
+    public Event(Long organizerId, String title, String description, String venue, LocalDateTime eventDate,
+                 int capacity, EventStatus status) {
+        if (title == null || title.isBlank()) throw new IllegalArgumentException("title is required");
+        if (title.length() > 100) throw new IllegalArgumentException("title must be less than 100 characters");
         //maybe add more validation later, come back
 
         this.organizerId = organizerId;
