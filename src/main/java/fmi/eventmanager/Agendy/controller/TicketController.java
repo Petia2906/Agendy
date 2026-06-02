@@ -84,8 +84,8 @@ public class TicketController {
         dto.setPurchasedAt(ticket.getPurchasedAt());
 
         if (ticket.getEvent() != null) {
-            //dto.setEventId(ticket.getEvent().getId());
-            //dto.setEventName(ticket.getEvent().getName());
+            dto.setEventId(ticket.getEvent().getId());
+            dto.setEventName(ticket.getEvent().getTitle());
         }
         if (ticket.getUser() != null) {
             dto.setUserId(ticket.getUser().getId());

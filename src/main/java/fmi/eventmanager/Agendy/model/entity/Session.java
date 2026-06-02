@@ -40,7 +40,7 @@ public class Session {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    public Session() {} //check if should be protected
+    public Session() { } //check if should be protected
 
     public Session(Event event, User speaker, Hall hall, String title, String description, LocalDateTime startTime, LocalDateTime endTime) {
         this.event = event;
