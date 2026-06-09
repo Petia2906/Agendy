@@ -24,7 +24,8 @@ public class SessionService {
     private final HallRepository hallRepository;
     private final UserRepository userRepository;
 
-    public SessionService(SessionRepository sessionRepository, EventRepository eventRepository, HallRepository hallRepository,
+    public SessionService(SessionRepository sessionRepository, EventRepository eventRepository,
+                          HallRepository hallRepository,
                           UserRepository userRepository) {
         this.sessionRepository = sessionRepository;
         this.eventRepository = eventRepository;
