@@ -5,7 +5,9 @@ import fmi.eventmanager.Agendy.model.dto.Events.EventResponse;
 import fmi.eventmanager.Agendy.model.dto.Events.UpdateEventRequest;
 import fmi.eventmanager.Agendy.model.entity.Event;
 import fmi.eventmanager.Agendy.model.entity.EventStatus;
+import fmi.eventmanager.Agendy.model.entity.User;
 import fmi.eventmanager.Agendy.repository.EventRepository;
+import fmi.eventmanager.Agendy.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,12 +19,18 @@ import java.util.List;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
     }
 
     public EventResponse createEvent(CreateEventRequest request, Long organizerId) {
+
+        User user = userRepository.findById(organizerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
         Event event = new Event(
                 organizerId,
                 request.getTitle(),

@@ -3,7 +3,7 @@ package fmi.eventmanager.Agendy.controller;
 import fmi.eventmanager.Agendy.model.dto.LoginRequest;
 import fmi.eventmanager.Agendy.model.dto.RegisterRequest;
 import fmi.eventmanager.Agendy.model.entity.User;
-git import fmi.eventmanager.Agendy.service.JwtService;
+import fmi.eventmanager.Agendy.service.JwtService;
 import fmi.eventmanager.Agendy.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +57,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal Long userId) {
+        System.out.println(">>> ME endpoint hit, userId: " + userId);
         User user = userService.findById(userId);
         return ResponseEntity.ok(Map.of(
                 "id", user.getId(),

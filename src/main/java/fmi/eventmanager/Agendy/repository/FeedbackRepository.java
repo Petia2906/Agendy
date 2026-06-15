@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findByEventId(Long eventId);
+
+    boolean existsByEventIdAndUserId(Long eventId, Long userId);
 }

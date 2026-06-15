@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/events/{eventId}")
 public class FeedbackController {
+    private static final int MIN_RATING = 1;
+    private static final int MAX_RATING = 5;
 
     private final FeedbackService feedbackService;
     private final TicketService ticketService;
@@ -40,15 +42,7 @@ public class FeedbackController {
             @RequestParam Long userId,
             @RequestBody FeedbackRequest dto) {
         try {
-            if (dto.getRating() < 1 || dto.getRating() > 5) {
-                return ResponseEntity.badRequest().body("Rating must be between 1 and 5");
-            }
-
-            Feedback feedback = new Feedback();
-            feedback.setRating(dto.getRating());
-            feedback.setComment(dto.getComment());
-
-            Feedback saved = feedbackService.saveFeedback(feedback);
+            Feedback saved = feedbackService.saveFeedback(eventId, userId, dto.getRating(), dto.getComment());
             return ResponseEntity.status(HttpStatus.CREATED).body(convertToResponse(saved, eventId, userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
