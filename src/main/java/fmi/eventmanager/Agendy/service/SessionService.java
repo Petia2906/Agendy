@@ -11,7 +11,9 @@ import fmi.eventmanager.Agendy.repository.EventRepository;
 import fmi.eventmanager.Agendy.repository.HallRepository;
 import fmi.eventmanager.Agendy.repository.SessionRepository;
 import fmi.eventmanager.Agendy.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +36,13 @@ public class SessionService {
     }
 
     // create session for event
-    public SessionResponse createSession(Long eventId, CreateSessionRequest request) {
+    public SessionResponse createSession(Long userId, Long eventId, CreateSessionRequest request) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        if (userId != event.getOrganizerId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only event organizers can add sessions!");
+        }
 
         Hall hall = hallRepository.findById(request.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
@@ -75,10 +81,13 @@ public class SessionService {
     }
 
     // update session
-    public SessionResponse updateSession(Long sessionId, UpdateSessionRequest request) {
-
+    public SessionResponse updateSession(Long userId, Long sessionId, UpdateSessionRequest request) {
         Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
+
+        if (userId != session.getEvent().getOrganizerId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only event organizers can add sessions!");
+        }
 
         Hall hall = hallRepository.findById(request.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
@@ -92,9 +101,12 @@ public class SessionService {
         return mapToResponse(saved);
     }
 
-    public void deleteSession(Long sessionId) {
-        sessionRepository.findById(sessionId)
+    public void deleteSession(Long userId, Long sessionId) {
+        Session session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
+        if (userId != session.getEvent().getOrganizerId()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only event organizers can add sessions!");
+        }
         sessionRepository.deleteById(sessionId);
     }
 
