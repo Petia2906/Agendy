@@ -10,6 +10,7 @@ import fmi.eventmanager.Agendy.service.FeedbackService;
 import fmi.eventmanager.Agendy.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/events/{eventId}")
 public class FeedbackController {
+    private static final int MIN_RATING = 1;
+    private static final int MAX_RATING = 5;
 
     private final FeedbackService feedbackService;
     private final TicketService ticketService;
@@ -37,18 +40,10 @@ public class FeedbackController {
     @PostMapping("/feedback")
     public ResponseEntity<?> createFeedback(
             @PathVariable Long eventId,
-            @RequestParam Long userId,
+            @AuthenticationPrincipal Long userId,
             @RequestBody FeedbackRequest dto) {
         try {
-            if (dto.getRating() < 1 || dto.getRating() > 5) {
-                return ResponseEntity.badRequest().body("Rating must be between 1 and 5");
-            }
-
-            Feedback feedback = new Feedback();
-            feedback.setRating(dto.getRating());
-            feedback.setComment(dto.getComment());
-
-            Feedback saved = feedbackService.saveFeedback(feedback);
+            Feedback saved = feedbackService.saveFeedback(eventId, userId, dto.getRating(), dto.getComment());
             return ResponseEntity.status(HttpStatus.CREATED).body(convertToResponse(saved, eventId, userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
