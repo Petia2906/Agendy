@@ -5,6 +5,7 @@ import fmi.eventmanager.Agendy.model.dto.Events.EventResponse;
 import fmi.eventmanager.Agendy.model.dto.Events.UpdateEventRequest;
 import fmi.eventmanager.Agendy.model.entity.Event;
 import fmi.eventmanager.Agendy.model.entity.EventStatus;
+import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.User;
 import fmi.eventmanager.Agendy.repository.EventRepository;
 import fmi.eventmanager.Agendy.repository.UserRepository;
@@ -30,6 +31,10 @@ public class EventService {
 
         User user = userRepository.findById(organizerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getRole() != Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can add events!");
+        }
 
         Event event = new Event(
                 organizerId,

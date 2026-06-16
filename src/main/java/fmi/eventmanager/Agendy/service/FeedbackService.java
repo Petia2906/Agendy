@@ -42,7 +42,6 @@ public class FeedbackService {
         if (event.getStatus() != EventStatus.PAST) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event has not passed yet!");
         }
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
@@ -50,12 +49,10 @@ public class FeedbackService {
         if (!hasTicket) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You must have a ticket to leave feedback");
         }
-
         boolean alreadyReviewed = feedbackRepository.existsByEventIdAndUserId(eventId, userId);
         if (alreadyReviewed) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You have already left feedback for this event");
         }
-
         if (rating < MIN_RATING || rating > MAX_RATING) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rating must be between 1 and 5");
         }
@@ -65,7 +62,6 @@ public class FeedbackService {
         feedback.setUser(user);
         feedback.setRating(rating);
         feedback.setComment(comment);
-
         return feedbackRepository.save(feedback);
     }
 

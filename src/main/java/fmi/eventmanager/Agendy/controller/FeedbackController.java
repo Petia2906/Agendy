@@ -10,6 +10,7 @@ import fmi.eventmanager.Agendy.service.FeedbackService;
 import fmi.eventmanager.Agendy.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class FeedbackController {
     @PostMapping("/feedback")
     public ResponseEntity<?> createFeedback(
             @PathVariable Long eventId,
-            @RequestParam Long userId,
+            @AuthenticationPrincipal Long userId,
             @RequestBody FeedbackRequest dto) {
         try {
             Feedback saved = feedbackService.saveFeedback(eventId, userId, dto.getRating(), dto.getComment());

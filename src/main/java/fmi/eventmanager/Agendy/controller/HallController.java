@@ -5,6 +5,7 @@ import fmi.eventmanager.Agendy.model.dto.Halls.HallResponse;
 import fmi.eventmanager.Agendy.service.HallService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,11 @@ public class HallController {
     }
 
     @PostMapping
-    public ResponseEntity<HallResponse> createHall(@PathVariable Long eventId, @RequestBody @Valid CreateHallRequest request) {
-        HallResponse response = hallService.createHall(eventId, request);
-        return ResponseEntity.status(201).body(response);
+    public ResponseEntity<HallResponse> createHall(@PathVariable Long eventId,
+                                                   @RequestBody @Valid CreateHallRequest request,
+                                                   @AuthenticationPrincipal Long userId) {
+        HallResponse response = hallService.createHall(userId, eventId, request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
@@ -38,8 +41,8 @@ public class HallController {
     }
 
     @DeleteMapping("/{hallId}")
-    public ResponseEntity<Void> deleteHall(@PathVariable Long hallId) {
-        hallService.deleteHall(hallId);
+    public ResponseEntity<Void> deleteHall(@PathVariable Long hallId, @AuthenticationPrincipal Long userId) {
+        hallService.deleteHall(userId, hallId);
         return ResponseEntity.noContent().build();
     }
 }
