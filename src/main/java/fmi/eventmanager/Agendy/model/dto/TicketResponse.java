@@ -11,15 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class TicketResponse {
-
     private Long id;
     private Long eventId;
-    private String eventName;
+    private String eventTitle;
     private Long userId;
     private TicketType ticketType;
     private BigDecimal price;
     private TicketStatus status;
     private LocalDateTime purchasedAt;
-
-    public TicketResponse() { }
 }

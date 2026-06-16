@@ -1,6 +1,7 @@
 package fmi.eventmanager.Agendy.repository;
 
 import fmi.eventmanager.Agendy.model.entity.Ticket;
+import fmi.eventmanager.Agendy.model.entity.TicketStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByEventId(Long eventId);
 
     boolean existsByEventIdAndUserId(Long eventId, Long userId);
+
+    long countByEventIdAndStatus(Long eventId, TicketStatus ticketStatus);
 }

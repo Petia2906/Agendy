@@ -1,7 +1,9 @@
 package fmi.eventmanager.Agendy.controller;
 
+import fmi.eventmanager.Agendy.model.dto.CreateSpeakerRequest;
 import fmi.eventmanager.Agendy.model.entity.Speaker;
 import fmi.eventmanager.Agendy.service.SpeakerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,9 +20,10 @@ public class SpeakerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSpeaker(@RequestBody Speaker speaker, @AuthenticationPrincipal Long userId) {
+    public ResponseEntity<?> createSpeaker(@RequestBody @Valid CreateSpeakerRequest request,
+                                           @AuthenticationPrincipal Long userId) {
         try {
-            Speaker created = speakerService.createSpeaker(userId, speaker);
+            Speaker created = speakerService.createSpeaker(userId, request);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
