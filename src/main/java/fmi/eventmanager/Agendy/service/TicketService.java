@@ -103,4 +103,8 @@ public class TicketService {
         response.setPurchasedAt(ticket.getPurchasedAt());
         return response;
     }
+
+    public List<Ticket> getTicketsByEvent(Long eventId) {
+        return ticketRepository.findByEventId(eventId);
+    }
 }
