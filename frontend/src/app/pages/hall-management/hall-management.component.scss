@@ -1,0 +1,117 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--surface);
+}
+
+.nav {
+  padding: 1.5rem 4rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+
+  .back { color: var(--primary); font-weight: 500; }
+}
+
+.content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+
+  &:hover { background-color: var(--primary-hover); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.add-form {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  h2 { margin-bottom: 1.5rem; font-size: 1.1rem; }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+
+  label { font-weight: 500; margin-bottom: 0.4rem; font-size: 0.9rem; }
+
+  input {
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+
+    &:focus { border-color: var(--primary); }
+  }
+}
+
+.validation-error {
+  color: var(--status-cancelled);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.error {
+  background-color: #fdecea;
+  color: var(--status-cancelled);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.loading, .empty {
+  color: var(--text-muted);
+  padding: 1rem 0;
+}
+
+.hall-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .hall-info {
+    h3 { margin-bottom: 0.25rem; font-size: 1rem; }
+    span { font-size: 0.9rem; color: var(--text-muted); }
+  }
+}
+
+.btn-delete {
+  background: none;
+  border: 1px solid var(--status-cancelled);
+  color: var(--status-cancelled);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+
+  &:hover { background-color: #fdecea; }
+}

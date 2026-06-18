@@ -1,0 +1,32 @@
+<div class="page">
+  <nav class="nav">
+    <a routerLink="/" class="logo">Agendy</a>
+    <div class="nav-links">
+      <a routerLink="/my-tickets">My Tickets</a>
+      <a routerLink="/dashboard">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h1>Upcoming Events</h1>
+
+    <div class="loading" *ngIf="loading">Loading events...</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="events-grid" *ngIf="!loading && !error">
+      <a class="event-card" *ngFor="let event of events" [routerLink]="['/events', event.id]">
+        <div class="event-header">
+          <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
+        </div>
+        <h2>{{ event.title }}</h2>
+        <p class="venue">{{ event.venue }}</p>
+        <p class="date">{{ event.eventDate | date:'mediumDate' }}</p>
+        <p class="capacity">{{ event.capacity }} seats</p>
+      </a>
+
+      <div class="empty" *ngIf="events.length === 0">
+        No events found.
+      </div>
+    </div>
+  </div>
+</div>
