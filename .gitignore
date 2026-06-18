@@ -34,3 +34,4 @@ build/
 
 ### Utils ###
 .env
+src/main/resources/application.properties

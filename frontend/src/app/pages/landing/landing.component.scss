@@ -1,0 +1,81 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 4rem;
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--primary);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    a {
+      color: var(--text);
+      font-weight: 500;
+
+      &.btn-primary {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+
+        &:hover {
+          background-color: var(--primary-hover);
+        }
+      }
+    }
+  }
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+
+  h1 {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+
+    &.large {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background-color: var(--primary-hover);
+    }
+  }
+}

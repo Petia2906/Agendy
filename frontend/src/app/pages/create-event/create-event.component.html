@@ -1,0 +1,53 @@
+<div class="page">
+  <nav class="nav">
+    <a routerLink="/dashboard" class="back">← Back to Dashboard</a>
+  </nav>
+
+  <div class="content">
+    <h1>Create New Event</h1>
+    <p class="subtitle">Fill in the details for your event</p>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="event-form">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="form.title" name="title" required #title="ngModel"
+               placeholder="e.g. Tech Conference 2026" />
+        <span class="validation-error" *ngIf="title.invalid && title.touched">Title is required.</span>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea [(ngModel)]="form.description" name="description" rows="4"
+                  placeholder="Describe your event..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Venue</label>
+        <input type="text" [(ngModel)]="form.venue" name="venue" required #venue="ngModel"
+               placeholder="e.g. Sofia Event Center" />
+        <span class="validation-error" *ngIf="venue.invalid && venue.touched">Venue is required.</span>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Date</label>
+          <input type="date" [(ngModel)]="form.eventDate" name="eventDate" required #eventDate="ngModel" />
+          <span class="validation-error" *ngIf="eventDate.invalid && eventDate.touched">Date is required.</span>
+        </div>
+        <div class="field">
+          <label>Capacity</label>
+          <input type="number" [(ngModel)]="form.capacity" name="capacity" required min="10" #capacity="ngModel"
+                 placeholder="Min. 10" />
+          <span class="validation-error" *ngIf="capacity.invalid && capacity.touched">Minimum capacity is 10.</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/dashboard" class="btn-secondary">Cancel</a>
+        <button type="submit" class="btn-primary" [disabled]="eventForm.invalid">Create Event</button>
+      </div>
+    </form>
+  </div>
+</div>
