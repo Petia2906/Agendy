@@ -6,6 +6,7 @@ import fmi.eventmanager.Agendy.model.dto.Sessions.UpdateSessionRequest;
 import fmi.eventmanager.Agendy.service.SessionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +21,11 @@ public class SessionController {
     }
 
     @PostMapping("/events/{eventId}/sessions")
-    public ResponseEntity<SessionResponse> createSession(@PathVariable Long eventId, @RequestBody @Valid CreateSessionRequest request) {
-        SessionResponse response = sessionService.createSession(eventId, request);
-        return ResponseEntity.status(201).body(response);
+    public ResponseEntity<SessionResponse> createSession(@PathVariable Long eventId,
+                                                         @RequestBody @Valid CreateSessionRequest request,
+                                                         @AuthenticationPrincipal Long userId) {
+        SessionResponse response = sessionService.createSession(userId, eventId, request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/events/{eventId}/sessions")
@@ -32,14 +35,16 @@ public class SessionController {
     }
 
     @PutMapping("/sessions/{sessionId}")
-    public ResponseEntity<SessionResponse> updateSession(@PathVariable Long sessionId, @RequestBody @Valid UpdateSessionRequest request) {
-        SessionResponse response = sessionService.updateSession(sessionId, request);
+    public ResponseEntity<SessionResponse> updateSession(@PathVariable Long sessionId,
+                                                         @RequestBody @Valid UpdateSessionRequest request,
+                                                         @AuthenticationPrincipal Long userId) {
+        SessionResponse response = sessionService.updateSession(userId, sessionId, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/sessions/{sessionId}")
-    public ResponseEntity<Void> deleteSession(@PathVariable Long sessionId) {
-        sessionService.deleteSession(sessionId);
+    public ResponseEntity<Void> deleteSession(@PathVariable Long sessionId, @AuthenticationPrincipal Long userId) {
+        sessionService.deleteSession(userId, sessionId);
         return ResponseEntity.noContent().build();
     }
 }

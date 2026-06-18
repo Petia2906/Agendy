@@ -6,14 +6,8 @@ import fmi.eventmanager.Agendy.model.dto.Events.UpdateEventRequest;
 import fmi.eventmanager.Agendy.service.EventService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,9 +28,9 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody @Valid CreateEventRequest request) {
-        // organizerId should come from the authenticated user, hardcoded for now
-        EventResponse response = eventService.createEvent(request, 1L);
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @Valid CreateEventRequest request,
+                                                     @AuthenticationPrincipal Long userId) {
+        EventResponse response = eventService.createEvent(request, userId);
         return ResponseEntity.status(201).body(response);
     }
 
@@ -47,14 +41,18 @@ public class EventController {
     }
 
     @PutMapping("/{eventId}")
-    public ResponseEntity<EventResponse> updateEvent(@PathVariable Long eventId, @RequestBody @Valid UpdateEventRequest request) {
-        EventResponse response = eventService.updateEvent(eventId, request);
+    public ResponseEntity<EventResponse> updateEvent(@PathVariable Long eventId,
+                                                     @RequestBody @Valid UpdateEventRequest request,
+                                                     @AuthenticationPrincipal Long userId) {
+        //trqbva da se podade id da se vidi da li sum sobstvenik
+        EventResponse response = eventService.updateEvent(eventId, request, userId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId) {
-        eventService.deleteEvent(eventId);
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long eventId,
+                                            @AuthenticationPrincipal Long userId) {
+        eventService.deleteEvent(eventId, userId);
         return ResponseEntity.noContent().build();
     }
 }
