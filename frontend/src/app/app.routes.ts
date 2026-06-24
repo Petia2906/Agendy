@@ -34,6 +34,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/event-detail/event-detail.component').then(m => m.EventDetailComponent)
   },
   {
+    path: 'events/:id/analytics',
+    loadComponent: () => import('./pages/analytics/analytics.component').then(m => m.AnalyticsComponent)
+  },
+  {
     path: 'my-tickets',
     loadComponent: () => import('./pages/my-tickets/my-tickets.component').then(m => m.MyTicketsComponent)
   },

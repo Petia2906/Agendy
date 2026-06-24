@@ -1,0 +1,216 @@
+.analytics-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    margin: 0;
+    color: #cf7923;
+    font-size: 2rem;
+  }
+
+  .back-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #cf7923;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}
+
+.loading,
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.analytics-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.analytics-section {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin: 0 0 1.5rem 0;
+    color: #333;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #cf7923;
+    padding-bottom: 0.75rem;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-style: italic;
+}
+
+// Feedback Cards
+.feedback-card {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-left: 4px solid #cf7923;
+  border-radius: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .user-info {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+      font-size: 1rem;
+    }
+
+    .rating-stars {
+      .star {
+        color: #ffc107;
+        font-size: 1.2rem;
+        margin-right: 0.25rem;
+      }
+    }
+  }
+
+  .date {
+    color: #999;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .comment {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+  }
+}
+
+// Tickets Table
+.tickets-table {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+
+    thead {
+      background-color: #f0f0f0;
+
+      th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #ddd;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #f9f9f9;
+        }
+
+        td {
+          padding: 1rem;
+          color: #555;
+        }
+      }
+    }
+  }
+}
+
+.ticket-type {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.standard {
+    background-color: #e7f3ff;
+    color: #004085;
+  }
+
+  &.vip {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  &.premium {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}
+
+.status {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.confirmed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  &.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  &.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}

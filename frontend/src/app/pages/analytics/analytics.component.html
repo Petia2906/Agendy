@@ -1,0 +1,75 @@
+<div class="analytics-container">
+  <div class="analytics-header">
+    <h1>Event Analytics</h1>
+    <a routerLink="/events/{{ eventId }}" class="back-button">← Back to Event</a>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading analytics...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="analytics && !loading" class="analytics-content">
+    <!-- Ratings Section -->
+    <div class="analytics-section">
+      <h2>Ratings & Feedback</h2>
+
+      <div *ngIf="analytics.ratings.length === 0" class="empty-state">
+        No ratings yet.
+      </div>
+
+      <div *ngFor="let feedback of analytics.ratings" class="feedback-card">
+        <div class="feedback-header">
+          <div class="user-info">
+            <h3>{{ feedback.userName }}</h3>
+            <span class="rating-stars">
+              <span *ngFor="let star of getStarArray(feedback.rating)" class="star">★</span>
+            </span>
+          </div>
+          <span class="date">{{ formatDate(feedback.createdAt) }}</span>
+        </div>
+        <p class="comment">{{ feedback.comment }}</p>
+      </div>
+    </div>
+
+    <!-- Ticket Buyers Section -->
+    <div class="analytics-section">
+      <h2>Ticket Sales ({{ analytics.ticketBuyers.length }} tickets sold)</h2>
+
+      <div *ngIf="analytics.ticketBuyers.length === 0" class="empty-state">
+        No tickets sold yet.
+      </div>
+
+      <div *ngIf="analytics.ticketBuyers.length > 0" class="tickets-table">
+        <table>
+          <thead>
+          <tr>
+            <th>Buyer Name</th>
+            <th>Email</th>
+            <th>Ticket Type</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Purchase Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let ticket of analytics.ticketBuyers">
+            <td>{{ ticket.userId }}</td>
+            <td>{{ ticket.userId }}</td>
+            <td>
+                <span class="ticket-type" [class]="ticket.ticketType.toLowerCase()">
+                  {{ ticket.ticketType }}
+                </span>
+            </td>
+            <td>${{ ticket.price }}</td>
+            <td>
+                <span class="status" [class]="ticket.status.toLowerCase()">
+                  {{ ticket.status }}
+                </span>
+            </td>
+            <td>{{ formatDate(ticket.purchasedAt) }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
