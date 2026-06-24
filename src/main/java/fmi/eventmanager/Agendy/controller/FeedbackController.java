@@ -30,11 +30,9 @@ public class FeedbackController {
     private static final int MAX_RATING = 5;
 
     private final FeedbackService feedbackService;
-    private final TicketService ticketService;
 
-    public FeedbackController(FeedbackService feedbackService, TicketService ticketService) {
+    public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
-        this.ticketService = ticketService;
     }
 
     @PostMapping("/feedback")
@@ -59,35 +57,6 @@ public class FeedbackController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/analytics")
-    public ResponseEntity<EventAnalyticsResponse> getEventAnalytics(@PathVariable Long eventId) {
-        List<Feedback> feedbacks = feedbackService.getFeedbacksByEvent(eventId);
-        List<Ticket> tickets = ticketService.getTicketsByEvent(eventId);
-
-        long soldTicketsCount = tickets.stream()
-                .filter(t -> t.getStatus() == TicketStatus.PURCHASED)
-                .count();
-
-        BigDecimal totalRevenue = tickets.stream()
-                .filter(t -> t.getStatus() == TicketStatus.PURCHASED)
-                .map(Ticket::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        double avgRating = feedbacks.stream()
-                .mapToInt(Feedback::getRating)
-                .average()
-                .orElse(0.0);
-
-        EventAnalyticsResponse analytics = new EventAnalyticsResponse();
-        analytics.setEventId(eventId);
-        analytics.setTotalTicketsSold(soldTicketsCount);
-        analytics.setTotalRevenue(totalRevenue);
-        analytics.setAverageRating(Math.round(avgRating * 10.0) / 10.0);
-        analytics.setTotalFeedbacksCount(feedbacks.size());
-
-        return ResponseEntity.ok(analytics);
     }
 
     private FeedbackResponse convertToResponse(Feedback feedback, Long eventId, Long userId) {

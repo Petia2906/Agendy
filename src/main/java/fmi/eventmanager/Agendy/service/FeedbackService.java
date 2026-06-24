@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FeedbackService {
@@ -70,37 +69,5 @@ public class FeedbackService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
         return feedbackRepository.findByEventId(eventId);
-    }
-
-    //use this method for admin analytics maybe?
-    public Map<String, Object> getAnalytics(Long eventId) {
-        if (!eventRepository.existsById(eventId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
-        }
-        List<Feedback> feedbacks = feedbackRepository.findByEventId(eventId);
-        if (feedbacks.isEmpty()) {
-            return Map.of(
-                    "eventId", eventId,
-                    "totalFeedbacks", 0,
-                    "averageRating", 0.0
-            );
-        }
-        double averageRating = feedbacks.stream()
-                .mapToInt(Feedback::getRating)
-                .average()
-                .orElse(0.0);
-        Map<Integer, Long> ratingDistribution = new java.util.HashMap<>();
-        for (int i = 1; i <= 5; i++) {
-            final int r = i;
-            ratingDistribution.put(r, feedbacks.stream()
-                    .filter(f -> f.getRating() == r)
-                    .count());
-        }
-        return Map.of(
-                "eventId", eventId,
-                "totalFeedbacks", feedbacks.size(),
-                "averageRating", Math.round(averageRating * 10.0) / 10.0,
-                "ratingDistribution", ratingDistribution
-        );
     }
 }
