@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TicketService } from '../../core/services/ticket.service';
 import { Ticket } from '../../core/models/ticket.model';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-my-tickets',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, HeaderComponent],
   templateUrl: './my-tickets.component.html',
   styleUrl: './my-tickets.component.scss'
 })

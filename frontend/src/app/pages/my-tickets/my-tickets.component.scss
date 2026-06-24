@@ -3,32 +3,6 @@
   background-color: var(--surface);
 }
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 4rem;
-  background: white;
-  border-bottom: 1px solid var(--border);
-
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    color: var(--primary);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-
-    a {
-      font-weight: 500;
-      color: var(--text);
-      &:hover { color: var(--primary); }
-    }
-  }
-}
-
 .content {
   max-width: 800px;
   margin: 0 auto;
