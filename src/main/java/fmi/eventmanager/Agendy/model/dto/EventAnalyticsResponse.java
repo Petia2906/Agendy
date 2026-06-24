@@ -3,16 +3,13 @@ package fmi.eventmanager.Agendy.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
 public class EventAnalyticsResponse {
-    private Long eventId;
-    private long totalTicketsSold;
-    private BigDecimal totalRevenue;
-    private double averageRating;
-    private long totalFeedbacksCount;
+    private List<FeedbackResponse> ratings;
+    private List<TicketResponse> ticketBuyers;
 
     public EventAnalyticsResponse() { }
 }
