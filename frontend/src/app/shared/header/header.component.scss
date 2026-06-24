@@ -1,0 +1,59 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 4rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--primary);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    a {
+      font-weight: 500;
+      color: var(--text);
+
+      &:hover {
+        color: var(--primary);
+      }
+
+      &.btn-primary {
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+
+        &:hover {
+          background-color: var(--primary-hover);
+        }
+      }
+    }
+  }
+
+  .btn-logout {
+    background: none;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+  }
+}
