@@ -1,0 +1,9 @@
+<nav class="nav">
+  <span class="logo" (click)="onLogoClick()">Agendy</span>
+  <div class="nav-links">
+    <ng-content></ng-content>
+    @if (authService.isLoggedIn()) {
+      <button class="btn-logout" (click)="logout()">Log out</button>
+    }
+  </div>
+</nav>
