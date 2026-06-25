@@ -39,7 +39,7 @@ public class AnalyticsService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
-        if (event.getOrganizerId() != user.getId()) {
+        if (!event.getOrganizerId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the organizer of the event " +
                     "and cannot view in debt analytics.");
         }
