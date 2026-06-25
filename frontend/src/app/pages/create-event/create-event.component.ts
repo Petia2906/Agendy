@@ -17,7 +17,8 @@ export class CreateEventComponent {
     description: '',
     venue: '',
     eventDate: '',
-    capacity: 0
+    capacity: 0,
+    price: 0
   };
 
   error = '';

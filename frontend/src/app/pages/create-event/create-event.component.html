@@ -44,6 +44,13 @@
         </div>
       </div>
 
+      <div class="field">
+        <label>Ticket Price ($)</label>
+        <input type="number" [(ngModel)]="form.price" name="price" required min="0" step="0.01" #price="ngModel"
+               placeholder="e.g. 50.99" />
+        <span class="validation-error" *ngIf="price.invalid && price.touched">Price is required (0 or more).</span>
+      </div>
+
       <div class="form-actions">
         <a routerLink="/dashboard" class="btn-secondary">Cancel</a>
         <button type="submit" class="btn-primary" [disabled]="eventForm.invalid">Create Event</button>
