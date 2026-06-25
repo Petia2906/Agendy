@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { attendeeGuard } from './core/guards/attendee.guard';
 
 export const routes: Routes = [
   {
@@ -30,12 +32,12 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard/create',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     loadComponent: () => import('./pages/create-event/create-event.component').then(m => m.CreateEventComponent)
   },
   {
     path: 'events',
-    canActivate: [authGuard],
+    canActivate: [attendeeGuard],
     loadComponent: () => import('./pages/event-list/event-list.component').then(m => m.EventListComponent)
   },
   {
@@ -45,16 +47,17 @@ export const routes: Routes = [
   },
   {
     path: 'events/:id/analytics',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/analytics/analytics.component').then(m => m.AnalyticsComponent)
   },
   {
     path: 'my-tickets',
-    canActivate: [authGuard],
+    canActivate: [attendeeGuard],
     loadComponent: () => import('./pages/my-tickets/my-tickets.component').then(m => m.MyTicketsComponent)
   },
   {
     path: 'dashboard',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {

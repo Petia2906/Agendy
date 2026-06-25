@@ -58,7 +58,7 @@ public class TicketService {
         ticket.setUser(user);
         ticket.setEvent(event);
         ticket.setTicketType(request.getTicketType());
-        ticket.setPrice(request.getPrice());
+        ticket.setPrice(event.getPrice());
         ticket.setStatus(TicketStatus.PURCHASED);
         Ticket saved = ticketRepository.save(ticket);
         return mapToResponse(saved);

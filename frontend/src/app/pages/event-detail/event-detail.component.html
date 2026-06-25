@@ -31,11 +31,39 @@
             <span class="value">{{ event.capacity }} seats</span>
           </div>
         </div>
+        <div class="meta-item">
+          <span class="meta-icon">💵</span>
+          <div>
+            <span class="label">Price</span>
+            <span class="value">${{ event.price }}</span>
+          </div>
+        </div>
       </div>
-      <div class="actions">
+      <div class="actions" *ngIf="isOwner">
         <a routerLink="/events/{{ event.id }}/analytics" class="analytics-button">
           📊 View Analytics
         </a>
+      </div>
+
+      <div class="purchase" *ngIf="isAttendee">
+        <div class="purchase-success" *ngIf="purchaseSuccess">
+          ✅ Ticket purchased! View it in
+          <a routerLink="/my-tickets">My Tickets</a>.
+        </div>
+
+        <ng-container *ngIf="!purchaseSuccess">
+          <div class="ticket-type">
+            <label>Ticket Type</label>
+            <select [(ngModel)]="selectedTicketType" name="ticketType">
+              <option value="REGULAR">Regular</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+          <div class="purchase-error" *ngIf="purchaseError">{{ purchaseError }}</div>
+          <button class="buy-button" (click)="buyTicket()" [disabled]="purchasing">
+            {{ purchasing ? 'Processing...' : 'Buy Ticket - $' + event.price }}
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ export interface Event {
   venue: string;
   eventDate: string;
   capacity: number;
+  price: number;
   status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED';
   createdAt: string;
 }
@@ -16,6 +17,7 @@ export interface CreateEventRequest {
   venue: string;
   eventDate: string;
   capacity: number;
+  price: number;
 }
 
 export interface UpdateEventRequest {
@@ -24,4 +26,5 @@ export interface UpdateEventRequest {
   venue?: string;
   eventDate?: string;
   capacity?: number;
+  price?: number;
 }
