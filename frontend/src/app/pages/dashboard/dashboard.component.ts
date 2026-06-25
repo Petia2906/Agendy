@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   constructor(private eventService: EventService) {}
 
   ngOnInit() {
-    this.eventService.getAllEvents().subscribe({
+    this.eventService.getMyEvents().subscribe({
       next: (data) => {
         this.events = data;
         this.loading = false;
