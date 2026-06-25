@@ -10,5 +10,4 @@ export interface Ticket {
 
 export interface CreateTicketRequest {
   ticketType: string;
-  price: number;
 }
