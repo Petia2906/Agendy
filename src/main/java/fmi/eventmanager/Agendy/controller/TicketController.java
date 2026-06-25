@@ -48,7 +48,7 @@ public class TicketController {
     public ResponseEntity<?> cancelTicket(@AuthenticationPrincipal Long userId,
                                           @PathVariable Long ticketId) {
         try {
-            TicketResponse response = ticketService.cancelTicket(ticketId, userId);
+            TicketResponse response = ticketService.cancelTicket(userId, ticketId);
             return ResponseEntity.ok(response);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
