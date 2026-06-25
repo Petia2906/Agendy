@@ -43,6 +43,7 @@ public class EventService {
                 request.getVenue(),
                 request.getEventDate(),
                 request.getCapacity(),
+                request.getPrice(),
                 EventStatus.PAST
         );
         Event saved = eventRepository.save(event);
@@ -64,6 +65,14 @@ public class EventService {
         return responses;
     }
 
+    public List<EventResponse> getMyEvents(Long organizerId) {
+        List<EventResponse> responses = new ArrayList<>();
+        for (Event e : eventRepository.findByOrganizerId(organizerId)) {
+            responses.add(mapToResponse(e));
+        }
+        return responses;
+    }
+
     public EventResponse updateEvent(Long id, UpdateEventRequest request, Long userId) {
 
         Event event = eventRepository.findById(id)
@@ -77,6 +86,7 @@ public class EventService {
         event.setVenue(request.getVenue());
         event.setEventDate(request.getEventDate());
         event.setCapacity(request.getCapacity());
+        event.setPrice(request.getPrice());
         Event saved = eventRepository.save(event);
         return mapToResponse(saved);
     }
@@ -95,11 +105,13 @@ public class EventService {
     private EventResponse mapToResponse(Event event) {
         EventResponse response = new EventResponse();
         response.setId(event.getId());
+        response.setOrganizerId(event.getOrganizerId());
         response.setTitle(event.getTitle());
         response.setDescription(event.getDescription());
         response.setVenue(event.getVenue());
         response.setEventDate(event.getEventDate());
         response.setCapacity(event.getCapacity());
+        response.setPrice(event.getPrice());
         response.setStatus(event.getStatus().name());
         response.setCreatedAt(event.getCreatedAt());
         return response;
