@@ -3,6 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/user.model';
 
+export interface CurrentUser {
+  id: number;
+  name: string;
+  email: string;
+  role: 'ATTENDEE' | 'ADMIN' | 'SPEAKER';
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +28,10 @@ export class AuthService {
 
   logout(): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/logout`, {});
+  }
+
+  getCurrentUser(): Observable<CurrentUser> {
+    return this.http.get<CurrentUser>(`${this.apiUrl}/me`);
   }
 
   saveToken(token: string): void {
