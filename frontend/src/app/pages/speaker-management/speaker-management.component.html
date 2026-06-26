@@ -1,0 +1,72 @@
+<div class="page">
+  <nav class="nav">
+    <a [routerLink]="['/dashboard']" class="back">← Back to Dashboard</a>
+  </nav>
+
+  <div class="content">
+    <div class="header">
+      <h1>Manage Speakers</h1>
+      <button class="btn-primary" (click)="showForm = !showForm">
+        {{ showForm ? 'Cancel' : '+ Add Speaker' }}
+      </button>
+    </div>
+
+    <div class="add-form" *ngIf="showForm">
+      <h2>New Speaker</h2>
+      <div class="error" *ngIf="formError">{{ formError }}</div>
+      <form (ngSubmit)="onSubmit()" #speakerForm="ngForm">
+        <div class="field">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="form.name" name="name" required #name="ngModel"
+                 placeholder="e.g. Dr. Jane Smith" />
+          <span class="validation-error" *ngIf="name.invalid && name.touched">Name is required.</span>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="form.email" name="email" required email #email="ngModel"
+                 placeholder="speaker@example.com" />
+          <span class="validation-error" *ngIf="email.invalid && email.touched">Valid email is required.</span>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" [(ngModel)]="form.password" name="password" required #password="ngModel"
+                 placeholder="••••••••" />
+          <span class="validation-error" *ngIf="password.invalid && password.touched">Password is required.</span>
+        </div>
+        <div class="field">
+          <label>Organization</label>
+          <input type="text" [(ngModel)]="form.organization" name="organization"
+                 placeholder="e.g. FMI" />
+        </div>
+        <div class="field">
+          <label>Photo URL</label>
+          <input type="text" [(ngModel)]="form.photoUrl" name="photoUrl"
+                 placeholder="https://..." />
+          <img *ngIf="form.photoUrl" [src]="form.photoUrl" class="photo-preview" alt="Preview" />
+        </div>
+        <div class="field">
+          <label>Bio</label>
+          <textarea [(ngModel)]="form.bio" name="bio" rows="3"
+                    placeholder="Short biography..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" [disabled]="speakerForm.invalid">Create Speaker</button>
+      </form>
+    </div>
+
+    <div class="loading" *ngIf="loading">Loading speakers...</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="speakers-list" *ngIf="!loading && !error">
+      <div class="empty" *ngIf="speakers.length === 0">No speakers yet. Add one above.</div>
+
+      <div class="speaker-card" *ngFor="let speaker of speakers">
+        <img *ngIf="speaker.photoUrl" [src]="speaker.photoUrl" class="speaker-photo" alt="{{ speaker.name }}" />
+        <div class="speaker-info">
+          <h3>{{ speaker.name }}</h3>
+          <span>{{ speaker.email }}</span>
+          <span *ngIf="speaker.organization"> · {{ speaker.organization }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

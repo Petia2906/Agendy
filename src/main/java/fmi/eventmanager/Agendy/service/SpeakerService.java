@@ -1,6 +1,7 @@
 package fmi.eventmanager.Agendy.service;
 
 import fmi.eventmanager.Agendy.model.dto.CreateSpeakerRequest;
+import fmi.eventmanager.Agendy.model.dto.SpeakerResponse;
 import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.Speaker;
 import fmi.eventmanager.Agendy.model.entity.User;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class SpeakerService {
@@ -45,5 +48,23 @@ public class SpeakerService {
         speaker.setOrganization(request.getOrganization());
 
         return speakerRepository.save(speaker);
+    }
+
+    public List<SpeakerResponse> getAllSpeakers() {
+        return speakerRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    private SpeakerResponse mapToResponse(Speaker speaker) {
+        SpeakerResponse response = new SpeakerResponse();
+        response.setId(speaker.getId());
+        response.setName(speaker.getName());
+        response.setEmail(speaker.getEmail());
+        response.setBio(speaker.getBio());
+        response.setPhotoUrl(speaker.getPhotoUrl());
+        response.setOrganization(speaker.getOrganization());
+        return response;
     }
 }
