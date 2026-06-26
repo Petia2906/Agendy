@@ -51,8 +51,9 @@ public class Event {
     @Column(nullable = false, columnDefinition = "numeric(10,2) default 0")
     private BigDecimal price;
 
+    //it will be calculated
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private EventStatus status;
 
     @Column(name = "created_at", nullable = false)
@@ -61,7 +62,7 @@ public class Event {
     protected Event() { }
 
     public Event(Long organizerId, String title, String description, String venue, LocalDateTime eventDate,
-                 int capacity, BigDecimal price, EventStatus status) {
+                 int capacity, BigDecimal price /*EventStatus status*/) {
         if (title == null || title.isBlank()) throw new IllegalArgumentException("title is required");
         if (title.length() > TITLE_LENGTH) throw new IllegalArgumentException("title must be less than 100 characters");
         //maybe add more validation later, come back
@@ -73,7 +74,7 @@ public class Event {
         this.eventDate = eventDate;
         this.capacity = capacity;
         this.price = price;
-        this.status = status;
+        //this.status = status;
         this.createdAt = LocalDateTime.now();
     }
     

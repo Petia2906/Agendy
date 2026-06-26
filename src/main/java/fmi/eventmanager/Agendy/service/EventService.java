@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +45,8 @@ public class EventService {
                 request.getVenue(),
                 request.getEventDate(),
                 request.getCapacity(),
-                request.getPrice(),
-                EventStatus.PAST
+                request.getPrice()
+                //EventStatus.PAST
         );
         Event saved = eventRepository.save(event);
         return mapToResponse(saved);
@@ -112,8 +114,17 @@ public class EventService {
         response.setEventDate(event.getEventDate());
         response.setCapacity(event.getCapacity());
         response.setPrice(event.getPrice());
-        response.setStatus(event.getStatus().name());
+        response.setStatus(computeStatus(event.getEventDate()).name());
         response.setCreatedAt(event.getCreatedAt());
         return response;
+    }
+
+    private EventStatus computeStatus(LocalDateTime eventDate) {
+        LocalDate eventDay = eventDate.toLocalDate();
+        LocalDate today = LocalDate.now();
+
+        if (eventDay.isBefore(today)) return EventStatus.PAST;
+        if (eventDay.isEqual(today)) return EventStatus.TODAY;
+        return EventStatus.UPCOMING;
     }
 }

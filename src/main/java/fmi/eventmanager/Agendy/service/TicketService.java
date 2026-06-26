@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
@@ -40,15 +40,15 @@ public class TicketService {
         if (user.getRole() != Role.ATTENDEE) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only attendees can purchase tickets!");
         }
-
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found!"));
-
+        if (event.getEventDate().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot purchase tickets for past events!");
+        }
         boolean alreadyPurchased = ticketRepository.existsByEventIdAndUserId(eventId, userId);
         if (alreadyPurchased) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You already have a ticket for this event!");
         }
-
         long soldTickets = ticketRepository.countByEventIdAndStatus(eventId, TicketStatus.PURCHASED);
         if (soldTickets >= event.getCapacity()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Event is fully booked!");
