@@ -18,14 +18,6 @@
         <label>Password</label>
         <input type="password" [(ngModel)]="form.password" name="password" required placeholder="••••••••" />
       </div>
-      <div class="field">
-        <label>I am a...</label>
-        <select [(ngModel)]="form.role" name="role">
-          <option value="ATTENDEE">Attendee</option>
-          <option value="ADMIN">Organizer</option>
-          <option value="SPEAKER">Speaker</option>
-        </select>
-      </div>
       <button type="submit" class="btn-primary">Create account</button>
     </form>
 

@@ -47,6 +47,19 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.getToken() !== null;
+    const token = this.getToken();
+    if (!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.exp && Date.now() >= payload.exp * 1000) {
+        this.removeToken(); // expired token, must remove
+        return false;
+      }
+      return true;
+    } catch {
+      this.removeToken(); // invalid token
+      return false;
+    }
   }
 }

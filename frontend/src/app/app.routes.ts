@@ -61,6 +61,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
+    path: 'admin/speakers',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/speaker-management/speaker-management.component').then(m => m.SpeakerManagementComponent)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

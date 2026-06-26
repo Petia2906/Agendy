@@ -8,11 +8,18 @@ import fmi.eventmanager.Agendy.model.entity.EventStatus;
 import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.User;
 import fmi.eventmanager.Agendy.repository.EventRepository;
+import fmi.eventmanager.Agendy.repository.FeedbackRepository;
+import fmi.eventmanager.Agendy.repository.HallRepository;
+import fmi.eventmanager.Agendy.repository.SessionRepository;
+import fmi.eventmanager.Agendy.repository.TicketRepository;
 import fmi.eventmanager.Agendy.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +28,20 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final SessionRepository sessionRepository;
+    private final HallRepository hallRepository;
+    private final TicketRepository ticketRepository;
+    private final FeedbackRepository feedbackRepository;
 
-    public EventService(EventRepository eventRepository, UserRepository userRepository) {
+    public EventService(EventRepository eventRepository, UserRepository userRepository,
+                        SessionRepository sessionRepository, HallRepository hallRepository,
+                        TicketRepository ticketRepository, FeedbackRepository feedbackRepository) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
+        this.hallRepository = hallRepository;
+        this.ticketRepository = ticketRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     public EventResponse createEvent(CreateEventRequest request, Long organizerId) {
@@ -43,8 +60,8 @@ public class EventService {
                 request.getVenue(),
                 request.getEventDate(),
                 request.getCapacity(),
-                request.getPrice(),
-                EventStatus.PAST
+                request.getPrice()
+                //EventStatus.PAST
         );
         Event saved = eventRepository.save(event);
         return mapToResponse(saved);
@@ -91,6 +108,8 @@ public class EventService {
         return mapToResponse(saved);
     }
 
+    //must refactor logic later
+    @Transactional
     public void deleteEvent(Long id, Long userId) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -99,6 +118,10 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the organizer of this event");
         }
 
+        sessionRepository.deleteAll(sessionRepository.findByEvent(event));
+        hallRepository.deleteAll(hallRepository.findByEvent(event));
+        ticketRepository.deleteAll(ticketRepository.findByEventId(event.getId()));
+        feedbackRepository.deleteAll(feedbackRepository.findByEventId(event.getId()));
         eventRepository.deleteById(id);
     }
 
@@ -112,8 +135,17 @@ public class EventService {
         response.setEventDate(event.getEventDate());
         response.setCapacity(event.getCapacity());
         response.setPrice(event.getPrice());
-        response.setStatus(event.getStatus().name());
+        response.setStatus(computeStatus(event.getEventDate()).name());
         response.setCreatedAt(event.getCreatedAt());
         return response;
+    }
+
+    private EventStatus computeStatus(LocalDateTime eventDate) {
+        LocalDate eventDay = eventDate.toLocalDate();
+        LocalDate today = LocalDate.now();
+
+        if (eventDay.isBefore(today)) return EventStatus.PAST;
+        if (eventDay.isEqual(today)) return EventStatus.TODAY;
+        return EventStatus.UPCOMING;
     }
 }

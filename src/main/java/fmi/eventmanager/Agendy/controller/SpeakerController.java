@@ -1,6 +1,7 @@
 package fmi.eventmanager.Agendy.controller;
 
 import fmi.eventmanager.Agendy.model.dto.CreateSpeakerRequest;
+import fmi.eventmanager.Agendy.model.dto.SpeakerResponse;
 import fmi.eventmanager.Agendy.model.entity.Speaker;
 import fmi.eventmanager.Agendy.service.SpeakerService;
 import jakarta.validation.Valid;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/speakers")
@@ -28,5 +31,10 @@ public class SpeakerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SpeakerResponse>> getAllSpeakers() {
+        return ResponseEntity.ok(speakerService.getAllSpeakers());
     }
 }
