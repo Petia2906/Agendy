@@ -11,7 +11,7 @@ export class AnalyticsService {
 
   constructor(private http: HttpClient) {}
 
-  getEventAnalytics(eventId: string): Observable<EventAnalyticsResponse> {
+  getEventAnalytics(eventId: number): Observable<EventAnalyticsResponse> {
     return this.http.get<EventAnalyticsResponse>(`${this.apiUrl}/${eventId}/analytics`);
   }
 }

@@ -18,13 +18,13 @@
 
   h1 {
     margin: 0;
-    color: #cf7923;
+    color: var(--primary);
     font-size: 2rem;
   }
 
   .back-button {
     padding: 0.75rem 1.5rem;
-    background-color: #cf7923;
+    background-color: var(--primary);
     color: white;
     text-decoration: none;
     border-radius: 4px;
@@ -66,7 +66,7 @@
     margin: 0 0 1.5rem 0;
     color: #333;
     font-size: 1.5rem;
-    border-bottom: 2px solid #cf7923;
+    border-bottom: 2px solid var(--primary);
     padding-bottom: 0.75rem;
   }
 }
@@ -83,7 +83,7 @@
   margin-bottom: 1.5rem;
   padding: 1rem;
   background-color: #f9f9f9;
-  border-left: 4px solid #cf7923;
+  border-left: 4px solid var(--primary);
   border-radius: 4px;
 
   &:last-child {

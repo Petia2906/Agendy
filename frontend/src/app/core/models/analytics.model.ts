@@ -1,25 +1,7 @@
-export interface FeedbackResponse {
-  id: number;
-  eventId: number;
-  userId: number;
-  userName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-}
-
-export interface TicketResponse {
-  id: number;
-  eventId: number;
-  eventTitle: string;
-  userId: number;
-  ticketType: string;
-  price: number;
-  status: string;
-  purchasedAt: string;
-}
+import { Feedback } from './feedback.model';
+import { Ticket } from './ticket.model';
 
 export interface EventAnalyticsResponse {
-  ratings: FeedbackResponse[];
-  ticketBuyers: TicketResponse[];
+  ratings: Feedback[];
+  ticketBuyers: Ticket[];
 }
