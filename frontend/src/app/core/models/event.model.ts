@@ -7,7 +7,7 @@ export interface Event {
   eventDate: string;
   capacity: number;
   price: number;
-  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED';
+  status: 'PAST' | 'TODAY' | 'UPCOMING';
   createdAt: string;
 }
 

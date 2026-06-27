@@ -63,6 +63,7 @@ public class EventService {
                 request.getPrice()
                 //EventStatus.PAST
         );
+        event.setStatus(computeStatus(request.getEventDate()));
         Event saved = eventRepository.save(event);
         return mapToResponse(saved);
     }
@@ -100,10 +101,12 @@ public class EventService {
         }
 
         event.setTitle(request.getTitle());
+        event.setDescription(request.getDescription());
         event.setVenue(request.getVenue());
         event.setEventDate(request.getEventDate());
         event.setCapacity(request.getCapacity());
         event.setPrice(request.getPrice());
+        event.setStatus(computeStatus(request.getEventDate()));
         Event saved = eventRepository.save(event);
         return mapToResponse(saved);
     }
