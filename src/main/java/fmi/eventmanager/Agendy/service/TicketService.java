@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,7 +43,7 @@ public class TicketService {
         }
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found!"));
-        if (event.getEventDate().isBefore(LocalDateTime.now())) {
+        if (event.getEventDate().toLocalDate().isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot purchase tickets for past events!");
         }
         boolean alreadyPurchased = ticketRepository.existsByEventIdAndUserId(eventId, userId);

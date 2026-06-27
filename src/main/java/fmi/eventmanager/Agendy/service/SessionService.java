@@ -48,7 +48,6 @@ public class SessionService {
 
         Hall hall = hallRepository.findById(request.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
-
         validateSessionTimes(event, request.getStartTime(), request.getEndTime());
 
         Session session = new Session(

@@ -1,0 +1,33 @@
+<div class="page">
+  <app-header>
+  </app-header>
+
+  <div class="content">
+    <h1>Your Events</h1>
+    <p class="subtitle">Events where you're scheduled to speak</p>
+
+    <div class="loading" *ngIf="loading">Loading your events...</div>
+    <div class="error-msg" *ngIf="error">{{ error }}</div>
+
+    <div class="empty" *ngIf="!loading && !error && events.length === 0">
+      You don't have any speaking engagements yet.
+    </div>
+
+    <div class="events-grid" *ngIf="!loading && !error && events.length > 0">
+      <a class="event-card" *ngFor="let event of events" [routerLink]="['/events', event.id]">
+        <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
+        <h3 class="event-title">{{ event.title }}</h3>
+        <div class="event-meta">
+          <span class="meta-item">
+            <span class="label">Date</span>
+            <span class="value">{{ event.eventDate | date:'mediumDate' }}</span>
+          </span>
+          <span class="meta-item">
+            <span class="label">Venue</span>
+            <span class="value">{{ event.venue }}</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

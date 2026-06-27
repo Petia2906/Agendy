@@ -55,8 +55,8 @@
           </thead>
           <tbody>
           <tr *ngFor="let ticket of analytics.ticketBuyers">
-            <td>{{ ticket.userId }}</td>
-            <td>{{ ticket.userId }}</td>
+            <td>{{ ticket.username }}</td>
+            <td>{{ ticket.email }}</td>
             <td>
                 <span class="ticket-type" [class]="ticket.ticketType.toLowerCase()">
                   {{ ticket.ticketType }}

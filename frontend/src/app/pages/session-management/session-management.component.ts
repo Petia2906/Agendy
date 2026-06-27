@@ -8,6 +8,7 @@ import { SpeakerService } from '../../core/services/speaker.service';
 import { Session, CreateSessionRequest } from '../../core/models/session.model';
 import { Hall } from '../../core/models/hall.model';
 import { Speaker } from '../../core/models/speaker.model';
+import { EventService } from '../../core/services/event.service';
 
 @Component({
   selector: 'app-session-management',
@@ -45,7 +46,8 @@ export class SessionManagementComponent implements OnInit {
     private route: ActivatedRoute,
     private sessionService: SessionService,
     private hallService: HallService,
-    private speakerService: SpeakerService
+    private speakerService: SpeakerService,
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
@@ -53,11 +55,26 @@ export class SessionManagementComponent implements OnInit {
     this.loadSessions();
     this.loadHalls();
     this.loadSpeakers();
+    this.loadEvent();
   }
 
   loadSpeakers() {
     this.speakerService.getAllSpeakers().subscribe({
       next: (data) => this.speakers = data,
+      error: () => {}
+    });
+  }
+
+  loadEvent() {
+    this.eventService.getEventById(this.eventId).subscribe({
+      next: (event) => {
+        this.eventDateStr = event.eventDate.slice(0, 10);
+        const today = new Date().toISOString().slice(0, 10);
+        this.isEventToday = this.eventDateStr === today;
+        this.minDateTime = this.isEventToday
+          ? new Date().toISOString().slice(0, 16)
+          : '';
+      },
       error: () => {}
     });
   }
@@ -153,8 +170,8 @@ export class SessionManagementComponent implements OnInit {
   onSubmit() {
     const payload = {
       ...this.form,
-      startTime: this.form.startTime + ':00',
-      endTime: this.form.endTime + ':00'
+      startTime: this.eventDateStr + 'T' + this.form.startTime + ':00',
+      endTime: this.eventDateStr + 'T' + this.form.endTime + ':00'
     };
 
     if (this.editingId) {

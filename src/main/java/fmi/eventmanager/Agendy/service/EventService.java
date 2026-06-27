@@ -52,7 +52,7 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can add events!");
         }
 
-        if (request.getEventDate().isBefore(LocalDateTime.now())) {
+        if (request.getEventDate().toLocalDate().isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event date cannot be in the past");
         }
 
@@ -103,7 +103,7 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the organizer of this event");
         }
 
-        if (request.getEventDate().isBefore(LocalDateTime.now())) {
+        if (request.getEventDate().toLocalDate().isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event date cannot be in the past");
         }
 
@@ -135,7 +135,7 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    private EventResponse mapToResponse(Event event) {
+    public EventResponse mapToResponse(Event event) {
         EventResponse response = new EventResponse();
         response.setId(event.getId());
         response.setOrganizerId(event.getOrganizerId());

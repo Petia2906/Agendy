@@ -15,6 +15,8 @@ public class TicketResponse {
     private Long eventId;
     private String eventTitle;
     private Long userId;
+    private String username;
+    private String email;
     private TicketType ticketType;
     private BigDecimal price;
     private TicketStatus status;
