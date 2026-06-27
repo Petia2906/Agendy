@@ -32,7 +32,7 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 
   &:hover { background-color: var(--primary-hover); }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -60,7 +60,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 1rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-body);
     outline: none;
 
     &:focus { border-color: var(--primary); }
@@ -116,7 +116,7 @@
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 
   &:hover { background-color: var(--surface); }
 }
@@ -129,7 +129,7 @@
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 
   &:hover { background-color: #fdecea; }
 }

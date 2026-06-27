@@ -40,6 +40,7 @@
 
     th {
       text-align: left;
+      vertical-align: middle;
       padding: 1rem 1.5rem;
       font-size: 0.8rem;
       text-transform: uppercase;
@@ -49,6 +50,7 @@
     }
 
     td {
+      vertical-align: middle;
       padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--border);
       font-size: 0.95rem;
@@ -70,9 +72,9 @@
   border-radius: 20px;
   text-transform: uppercase;
 
-  &.draft { background-color: #fff3cd; color: var(--status-draft); }
-  &.published { background-color: #e8f5e9; color: var(--status-published); }
-  &.cancelled { background-color: #fdecea; color: var(--status-cancelled); }
+  &.upcoming { background-color: #e8f5e9; color: var(--status-published); }
+  &.today { background-color: #fff3cd; color: var(--status-draft); }
+  &.past { background-color: #f0f0f0; color: #666; }
 }
 
 .actions {
@@ -99,7 +101,7 @@
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 
   &:hover { background-color: #fdecea; }
 }

@@ -5,6 +5,8 @@ import { EventService } from '../../core/services/event.service';
 import { Event } from '../../core/models/event.model';
 import { HeaderComponent } from '../../shared/header/header.component';
 
+type StatusFilter = 'ALL' | 'UPCOMING' | 'TODAY' | 'PAST';
+
 @Component({
   selector: 'app-event-list',
   imports: [RouterLink, CommonModule, HeaderComponent],
@@ -16,7 +18,19 @@ export class EventListComponent implements OnInit {
   loading = true;
   error = '';
 
+  activeFilter: StatusFilter = 'ALL';
+  readonly filters: StatusFilter[] = ['ALL', 'UPCOMING', 'TODAY', 'PAST'];
+
   constructor(private eventService: EventService) {}
+
+  get filteredEvents(): Event[] {
+    if (this.activeFilter === 'ALL') return this.events;
+    return this.events.filter(e => e.status === this.activeFilter);
+  }
+
+  setFilter(filter: StatusFilter): void {
+    this.activeFilter = filter;
+  }
 
   ngOnInit() {
     this.eventService.getAllEvents().subscribe({

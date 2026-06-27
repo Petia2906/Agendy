@@ -48,7 +48,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       font-size: 1rem;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-body);
       outline: none;
 
       &:focus {
@@ -67,7 +67,7 @@
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-body);
 
     &:hover {
       background-color: var(--primary-hover);

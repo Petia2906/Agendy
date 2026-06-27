@@ -1,7 +1,7 @@
 <div class="page" *ngIf="event">
-  <nav class="nav">
-    <a routerLink="/events" class="back">← Back to Events</a>
-  </nav>
+  <app-header>
+    <a routerLink="/my-tickets" *ngIf="isAttendee">My Tickets</a>
+  </app-header>
 
   <div class="hero">
     <div class="hero-inner">
@@ -9,61 +9,52 @@
       <h1>{{ event.title }}</h1>
       <p class="description">{{ event.description }}</p>
 
-      <div class="meta">
-        <div class="meta-item">
-          <span class="meta-icon">📍</span>
-          <div>
+      <div class="event-panel">
+        <div class="meta">
+          <div class="meta-item">
             <span class="label">Venue</span>
             <span class="value">{{ event.venue }}</span>
           </div>
-        </div>
-        <div class="meta-item">
-          <span class="meta-icon">📅</span>
-          <div>
+          <div class="meta-item">
             <span class="label">Date</span>
             <span class="value">{{ event.eventDate | date:'longDate' }}</span>
           </div>
-        </div>
-        <div class="meta-item">
-          <span class="meta-icon">🎟️</span>
-          <div>
+          <div class="meta-item">
             <span class="label">Capacity</span>
             <span class="value">{{ event.capacity }} seats</span>
           </div>
-        </div>
-        <div class="meta-item">
-          <span class="meta-icon">💵</span>
-          <div>
+          <div class="meta-item">
             <span class="label">Price</span>
             <span class="value">${{ event.price }}</span>
           </div>
         </div>
-      </div>
-      <div class="actions" *ngIf="isOwner">
-        <a routerLink="/events/{{ event.id }}/analytics" class="analytics-button">
-          📊 View Analytics
-        </a>
-      </div>
 
-      <div class="purchase" *ngIf="isAttendee">
-        <div class="purchase-success" *ngIf="purchaseSuccess">
-          ✅ Ticket purchased! View it in
-          <a routerLink="/my-tickets">My Tickets</a>.
+        <div class="purchase" *ngIf="isAttendee">
+          <div class="purchase-success" *ngIf="purchaseSuccess">
+            Ticket purchased! View it in
+            <a routerLink="/my-tickets">My Tickets</a>.
+          </div>
+
+          <ng-container *ngIf="!purchaseSuccess">
+            <div class="ticket-type">
+              <label>Ticket Type</label>
+              <select [(ngModel)]="selectedTicketType" name="ticketType">
+                <option value="REGULAR">Regular</option>
+                <option value="VIP">VIP</option>
+              </select>
+            </div>
+            <div class="purchase-error" *ngIf="purchaseError">{{ purchaseError }}</div>
+            <button class="buy-button" (click)="buyTicket()" [disabled]="purchasing">
+              {{ purchasing ? 'Processing...' : 'Buy Ticket - $' + event.price }}
+            </button>
+          </ng-container>
         </div>
 
-        <ng-container *ngIf="!purchaseSuccess">
-          <div class="ticket-type">
-            <label>Ticket Type</label>
-            <select [(ngModel)]="selectedTicketType" name="ticketType">
-              <option value="REGULAR">Regular</option>
-              <option value="VIP">VIP</option>
-            </select>
-          </div>
-          <div class="purchase-error" *ngIf="purchaseError">{{ purchaseError }}</div>
-          <button class="buy-button" (click)="buyTicket()" [disabled]="purchasing">
-            {{ purchasing ? 'Processing...' : 'Buy Ticket - $' + event.price }}
-          </button>
-        </ng-container>
+        <div class="actions" *ngIf="isOwner">
+          <a routerLink="/events/{{ event.id }}/analytics" class="analytics-button">
+            View Analytics
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -74,20 +65,21 @@
 
       <div class="empty" *ngIf="sessions.length === 0">No sessions scheduled yet.</div>
 
-      <div class="timeline">
-        <div class="timeline-item" *ngFor="let session of sessions">
-          <div class="timeline-time">
-            <span class="time-start">{{ session.startTime | date:'shortTime' }}</span>
-            <span class="time-end">{{ session.endTime | date:'shortTime' }}</span>
-          </div>
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="card-header">
-              <h3>{{ session.title }}</h3>
-              <span class="hall-badge">{{ getHallName(session.hallId) }}</span>
+      <div class="hall-columns" *ngIf="sessions.length > 0">
+        <div class="hall-column" *ngFor="let group of sessionsByHall">
+          <h3 class="hall-column-title">{{ group.hallName }}</h3>
+          <div class="timeline">
+            <div class="timeline-item" *ngFor="let session of group.sessions">
+              <div class="timeline-dot"></div>
+              <div class="session-card">
+                <div class="session-time">
+                  {{ session.startTime | date:'shortTime' }} – {{ session.endTime | date:'shortTime' }}
+                </div>
+                <h4 class="session-title">{{ session.title }}</h4>
+                <p class="session-speaker" *ngIf="session.speakerName">{{ session.speakerName }}</p>
+                <p class="session-desc" *ngIf="session.description">{{ session.description }}</p>
+              </div>
             </div>
-            <p class="session-speaker" *ngIf="session.speakerName">🎤 {{ session.speakerName }}</p>
-            <p *ngIf="session.description">{{ session.description }}</p>
           </div>
         </div>
       </div>

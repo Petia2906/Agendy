@@ -12,10 +12,11 @@ import { Event } from '../../core/models/event.model';
 import { Session } from '../../core/models/session.model';
 import { Hall } from '../../core/models/hall.model';
 import { Feedback } from '../../core/models/feedback.model';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-event-detail',
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule, HeaderComponent],
   templateUrl: './event-detail.component.html',
   styleUrl: './event-detail.component.scss'
 })
@@ -51,7 +52,7 @@ export class EventDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id')!;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
@@ -61,7 +62,7 @@ export class EventDetailComponent implements OnInit {
 
         if (this.isAttendee) {
           this.ticketService.getMyTickets().subscribe({
-            next: (tickets) => this.hasTicket = tickets.some(t => String(t.eventId) === id),
+            next: (tickets) => this.hasTicket = tickets.some(t => t.eventId === id),
             error: () => this.hasTicket = false
           });
         }
@@ -150,11 +151,28 @@ export class EventDetailComponent implements OnInit {
 
   private updateOwnership() {
     this.isOwner = this.event != null && this.currentUserId != null
-      && String(this.event.organizerId) === String(this.currentUserId);
+      && this.event.organizerId === this.currentUserId;
   }
 
-  getHallName(hallId: string): string {
+  getHallName(hallId: number): string {
     const hall = this.halls.find(h => h.id === hallId);
     return hall ? hall.name : 'Unknown Hall';
+  }
+
+  get sessionsByHall(): { hallId: number; hallName: string; sessions: Session[] }[] {
+    const groups = new Map<number, Session[]>();
+    for (const session of this.sessions) {
+      const list = groups.get(session.hallId) ?? [];
+      list.push(session);
+      groups.set(session.hallId, list);
+    }
+
+    return Array.from(groups.entries())
+      .map(([hallId, sessions]) => ({
+        hallId,
+        hallName: this.getHallName(hallId),
+        sessions: sessions.slice().sort((a, b) => a.startTime.localeCompare(b.startTime))
+      }))
+      .sort((a, b) => a.hallName.localeCompare(b.hallName));
   }
 }

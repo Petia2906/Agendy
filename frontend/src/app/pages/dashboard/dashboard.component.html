@@ -36,11 +36,13 @@
           <td>
             <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
           </td>
-          <td class="actions">
-            <a [routerLink]="['/events', event.id, 'edit']" class="btn-manage">Edit</a>
-            <a [routerLink]="['/events', event.id, 'halls']" class="btn-manage">Halls</a>
-            <a [routerLink]="['/events', event.id, 'sessions']" class="btn-manage">Sessions</a>
-            <button class="btn-delete" (click)="deleteEvent(event.id)">Delete</button>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/events', event.id, 'edit']" class="btn-manage">Edit</a>
+              <a [routerLink]="['/events', event.id, 'halls']" class="btn-manage">Halls</a>
+              <a [routerLink]="['/events', event.id, 'sessions']" class="btn-manage">Sessions</a>
+              <button class="btn-delete" (click)="deleteEvent(event.id)">Delete</button>
+            </div>
           </td>
         </tr>
         </tbody>

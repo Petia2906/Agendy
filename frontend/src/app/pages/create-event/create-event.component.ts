@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventService } from '../../core/services/event.service';
 import { CreateEventRequest } from '../../core/models/event.model';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-create-event',
-  imports: [RouterLink, FormsModule, CommonModule],
+  imports: [RouterLink, FormsModule, CommonModule, HeaderComponent],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss'
 })
@@ -22,7 +23,7 @@ export class CreateEventComponent implements OnInit {
   };
 
   error = '';
-  editingId: string | null = null;
+  editingId: number | null = null;
 
   constructor(
     private eventService: EventService,
@@ -31,8 +32,9 @@ export class CreateEventComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const id = Number(idParam);
       this.editingId = id;
       this.eventService.getEventById(id).subscribe({
         next: (event) => {

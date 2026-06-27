@@ -22,6 +22,39 @@
   color: var(--status-cancelled);
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  &.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+}
+
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -51,19 +84,19 @@
     border-radius: 20px;
     text-transform: uppercase;
 
-    &.draft {
-      background-color: #fff3cd;
-      color: var(--status-draft);
-    }
-
-    &.published {
+    &.upcoming {
       background-color: #e8f5e9;
       color: var(--status-published);
     }
 
-    &.cancelled {
-      background-color: #fdecea;
-      color: var(--status-cancelled);
+    &.today {
+      background-color: #fff3cd;
+      color: var(--status-draft);
+    }
+
+    &.past {
+      background-color: #f0f0f0;
+      color: #666;
     }
   }
 

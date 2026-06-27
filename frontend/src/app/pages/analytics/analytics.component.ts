@@ -3,16 +3,17 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { EventAnalyticsResponse } from '../../core/models/analytics.model';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-analytics',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, HeaderComponent],
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.scss'
 })
 export class AnalyticsComponent implements OnInit {
   analytics: EventAnalyticsResponse | null = null;
-  eventId: string = '';
+  eventId!: number;
   loading = true;
   error = '';
 
@@ -22,7 +23,7 @@ export class AnalyticsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('id')!;
+    this.eventId = Number(this.route.snapshot.paramMap.get('id'));
 
     this.analyticsService.getEventAnalytics(this.eventId).subscribe({
       next: (data) => {

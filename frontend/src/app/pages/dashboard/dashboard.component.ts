@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  deleteEvent(id: string) {
+  deleteEvent(id: number) {
     if (!confirm('Are you sure you want to delete this event?')) return;
 
     this.eventService.deleteEvent(id).subscribe({

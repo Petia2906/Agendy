@@ -44,8 +44,8 @@
         <div class="field">
           <label>Hall</label>
           <select [(ngModel)]="form.hallId" name="hallId" required #hallId="ngModel">
-            <option value="">Select a hall</option>
-            <option *ngFor="let hall of halls" [value]="hall.id">{{ hall.name }} ({{ hall.capacity }} seats)</option>
+            <option [ngValue]="null">Select a hall</option>
+            <option *ngFor="let hall of halls" [ngValue]="hall.id">{{ hall.name }} ({{ hall.capacity }} seats)</option>
           </select>
           <span class="validation-error" *ngIf="hallId.invalid && hallId.touched">Please select a hall.</span>
         </div>

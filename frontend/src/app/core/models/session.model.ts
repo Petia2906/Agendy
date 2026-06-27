@@ -1,9 +1,8 @@
 export interface Session {
-  id: string;
-  eventId: string;
-  speakerId: string;
+  id: number;
+  speakerId: number | null;
   speakerName?: string;
-  hallId: string;
+  hallId: number;
   title: string;
   description: string;
   startTime: string;
@@ -15,7 +14,7 @@ export interface CreateSessionRequest {
   description: string;
   startTime: string;
   endTime: string;
-  hallId: string;
+  hallId: number | null;
   speakerId: number | null;
 }
 
@@ -24,6 +23,6 @@ export interface UpdateSessionRequest {
   description: string;
   startTime: string;
   endTime: string;
-  hallId: string;
+  hallId: number | null;
   speakerId: number | null;
 }
