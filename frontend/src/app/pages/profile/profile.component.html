@@ -1,5 +1,14 @@
 <div class="page">
-  <app-header></app-header>
+  <app-header>
+    <ng-container *ngIf="user?.role === 'ADMIN'">
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/admin/speakers">Speakers</a>
+    </ng-container>
+    <ng-container *ngIf="user?.role === 'ATTENDEE'">
+      <a routerLink="/events">Events</a>
+      <a routerLink="/my-tickets">My Tickets</a>
+    </ng-container>
+  </app-header>
 
   <div class="content">
     <h1>My Profile</h1>
