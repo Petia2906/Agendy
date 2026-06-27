@@ -10,6 +10,7 @@ public class SessionResponse {
     private LocalDateTime endTime;
     private Long hallId;
     private Long speakerId;
+    private String speakerName;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -31,4 +32,7 @@ public class SessionResponse {
 
     public Long getSpeakerId() { return speakerId; }
     public void setSpeakerId(Long speakerId) { this.speakerId = speakerId; }
+
+    public String getSpeakerName() { return speakerName; }
+    public void setSpeakerName(String speakerName) { this.speakerName = speakerName; }
 }
