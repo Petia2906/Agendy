@@ -6,13 +6,13 @@
   <div class="content">
     <div class="header">
       <h1>Manage Sessions</h1>
-      <button class="btn-primary" (click)="showForm = !showForm">
+      <button class="btn-primary" (click)="showForm ? cancelForm() : openCreateForm()">
         {{ showForm ? 'Cancel' : '+ Add Session' }}
       </button>
     </div>
 
     <div class="add-form" *ngIf="showForm">
-      <h2>New Session</h2>
+      <h2>{{ editingId ? 'Edit Session' : 'New Session' }}</h2>
       <div class="error" *ngIf="formError">{{ formError }}</div>
       <form (ngSubmit)="onSubmit()" #sessionForm="ngForm">
         <div class="field">
@@ -50,12 +50,28 @@
           <span class="validation-error" *ngIf="hallId.invalid && hallId.touched">Please select a hall.</span>
         </div>
 
-        <div class="field">
-          <label>Speaker ID <span class="optional">(optional)</span></label>
-          <input type="text" [(ngModel)]="form.speakerId" name="speakerId" placeholder="Speaker user ID" />
+        <div class="field speaker-field">
+          <label>Speaker <span class="optional">(optional)</span></label>
+          <div class="speaker-search">
+            <input type="text" [(ngModel)]="speakerSearch" name="speakerSearch" autocomplete="off"
+                   placeholder="Search speakers by name or organization..."
+                   (focus)="showSpeakerDropdown = true"
+                   (input)="onSpeakerInput()"
+                   (blur)="showSpeakerDropdown = false" />
+            <button type="button" class="clear-speaker" *ngIf="speakerSearch" (click)="clearSpeaker()">✕</button>
+
+            <ul class="speaker-options" *ngIf="showSpeakerDropdown">
+              <li *ngFor="let speaker of filteredSpeakers" (mousedown)="selectSpeaker(speaker)">
+                {{ speaker.name }}<span class="org" *ngIf="speaker.organization"> — {{ speaker.organization }}</span>
+              </li>
+              <li class="empty-option" *ngIf="filteredSpeakers.length === 0">No matching speakers</li>
+            </ul>
+          </div>
         </div>
 
-        <button type="submit" class="btn-primary" [disabled]="sessionForm.invalid">Create Session</button>
+        <button type="submit" class="btn-primary" [disabled]="sessionForm.invalid">
+          {{ editingId ? 'Save Changes' : 'Create Session' }}
+        </button>
       </form>
     </div>
 
@@ -75,8 +91,12 @@
           <h3>{{ session.title }}</h3>
           <p>{{ session.description }}</p>
           <span class="hall-tag">{{ getHallName(session.hallId) }}</span>
+          <span class="speaker-tag" *ngIf="session.speakerName">🎤 {{ session.speakerName }}</span>
         </div>
-        <button class="btn-delete" (click)="deleteSession(session.id)">Delete</button>
+        <div class="session-actions">
+          <button class="btn-edit" (click)="editSession(session)">Edit</button>
+          <button class="btn-delete" (click)="deleteSession(session.id)">Delete</button>
+        </div>
       </div>
     </div>
   </div>
