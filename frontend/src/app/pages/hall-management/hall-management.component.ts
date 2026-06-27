@@ -12,7 +12,7 @@ import { Hall, CreateHallRequest } from '../../core/models/hall.model';
   styleUrl: './hall-management.component.scss'
 })
 export class HallManagementComponent implements OnInit {
-  eventId: string = '';
+  eventId!: number;
   halls: Hall[] = [];
   loading = true;
   error = '';
@@ -24,7 +24,7 @@ export class HallManagementComponent implements OnInit {
 
   formError = '';
   showForm = false;
-  editingId: string | null = null;
+  editingId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +32,7 @@ export class HallManagementComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('id')!;
+    this.eventId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadHalls();
   }
 
@@ -90,7 +90,7 @@ export class HallManagementComponent implements OnInit {
     }
   }
 
-  deleteHall(hallId: string) {
+  deleteHall(hallId: number) {
     if (!confirm('Delete this hall?')) return;
     this.hallService.deleteHall(this.eventId, hallId).subscribe({
       next: () => {
