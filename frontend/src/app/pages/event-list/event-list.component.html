@@ -4,13 +4,23 @@
   </app-header>
 
   <div class="content">
-    <h1>Upcoming Events</h1>
+    <h1>Amazing Events</h1>
 
     <div class="loading" *ngIf="loading">Loading events...</div>
     <div class="error" *ngIf="error">{{ error }}</div>
 
+    <div class="filters" *ngIf="!loading && !error">
+      <button
+        *ngFor="let filter of filters"
+        class="filter-btn"
+        [class.active]="activeFilter === filter"
+        (click)="setFilter(filter)">
+        {{ filter }}
+      </button>
+    </div>
+
     <div class="events-grid" *ngIf="!loading && !error">
-      <a class="event-card" *ngFor="let event of events" [routerLink]="['/events', event.id]">
+      <a class="event-card" *ngFor="let event of filteredEvents" [routerLink]="['/events', event.id]">
         <div class="event-header">
           <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
         </div>
@@ -20,7 +30,7 @@
         <p class="capacity">{{ event.capacity }} seats</p>
       </a>
 
-      <div class="empty" *ngIf="events.length === 0">
+      <div class="empty" *ngIf="filteredEvents.length === 0">
         No events found.
       </div>
     </div>
