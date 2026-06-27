@@ -1,0 +1,29 @@
+<div class="page">
+  <app-header></app-header>
+
+  <div class="content">
+    <h1>My Profile</h1>
+
+    <div class="loading" *ngIf="loading">Loading profile...</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="profile-card" *ngIf="user && !loading">
+      <div class="avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+
+      <div class="profile-info">
+        <div class="info-row">
+          <span class="label">Name</span>
+          <span class="value">{{ user.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Email</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Role</span>
+          <span class="role-badge" [class]="user.role.toLowerCase()">{{ user.role }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
