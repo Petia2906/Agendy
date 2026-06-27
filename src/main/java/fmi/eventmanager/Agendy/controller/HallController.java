@@ -2,6 +2,7 @@ package fmi.eventmanager.Agendy.controller;
 
 import fmi.eventmanager.Agendy.model.dto.Halls.CreateHallRequest;
 import fmi.eventmanager.Agendy.model.dto.Halls.HallResponse;
+import fmi.eventmanager.Agendy.model.dto.Halls.UpdateHallRequest;
 import fmi.eventmanager.Agendy.service.HallService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,13 @@ public class HallController {
     public ResponseEntity<List<HallResponse>> getHallsByEvent(@PathVariable Long eventId) {
         List<HallResponse> responses = hallService.getHallsByEvent(eventId);
         return ResponseEntity.ok(responses);
+    }
+
+    @PutMapping("/{hallId}")
+    public ResponseEntity<HallResponse> updateHall(@PathVariable Long hallId,
+                                                   @RequestBody @Valid UpdateHallRequest request,
+                                                   @AuthenticationPrincipal Long userId) {
+        return ResponseEntity.ok(hallService.updateHall(userId, hallId, request));
     }
 
     @DeleteMapping("/{hallId}")

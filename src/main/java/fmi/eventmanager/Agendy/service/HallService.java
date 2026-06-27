@@ -51,6 +51,17 @@ public class HallService {
         return responses;
     }
 
+    public HallResponse updateHall(Long userId, Long hallId, fmi.eventmanager.Agendy.model.dto.Halls.UpdateHallRequest request) {
+        Hall hall = hallRepository.findById(hallId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hall not found!"));
+        if (!hall.getEvent().getOrganizerId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only organizers can edit halls.");
+        }
+        hall.setName(request.getName());
+        hall.setCapacity(request.getCapacity());
+        return mapToResponse(hallRepository.save(hall));
+    }
+
     public void deleteHall(Long userId, Long hallId) {
         Hall hall = hallRepository.findById(hallId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hall not found!"));
