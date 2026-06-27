@@ -4,7 +4,7 @@
   </nav>
 
   <div class="content">
-    <h1>Create New Event</h1>
+    <h1>{{ editingId ? 'Edit Event' : 'Create New Event' }}</h1>
     <p class="subtitle">Fill in the details for your event</p>
 
     <div class="error" *ngIf="error">{{ error }}</div>
@@ -53,7 +53,9 @@
 
       <div class="form-actions">
         <a routerLink="/dashboard" class="btn-secondary">Cancel</a>
-        <button type="submit" class="btn-primary" [disabled]="eventForm.invalid">Create Event</button>
+        <button type="submit" class="btn-primary" [disabled]="eventForm.invalid">
+          {{ editingId ? 'Save Changes' : 'Create Event' }}
+        </button>
       </div>
     </form>
   </div>
