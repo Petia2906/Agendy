@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gelasio:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary: #D85A30;
-  --primary-hover: #c04e28;
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Gelasio', serif;
+  --primary: #aa4faa;
+  --primary-hover: #ef40fb;
   --background: #ffffff;
   --surface: #f9f9f9;
   --text: #1a1a1a;
@@ -21,13 +23,13 @@
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   background-color: var(--background);
   color: var(--text);
 }
 
 h1, h2, h3 {
-  font-family: 'DM Serif Display', serif;
+  font-family: var(--font-heading);
 }
 
 a {

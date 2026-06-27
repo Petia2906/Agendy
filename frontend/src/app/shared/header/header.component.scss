@@ -7,7 +7,7 @@
   border-bottom: 1px solid var(--border);
 
   .logo {
-    font-family: 'DM Serif Display', serif;
+    font-family: var(--font-heading);
     font-size: 1.5rem;
     color: var(--primary);
     cursor: pointer;
@@ -48,7 +48,7 @@
     padding: 0.4rem 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-body);
     cursor: pointer;
 
     &:hover {
