@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
     List<Session> findByEvent(Event event);
+
+    List<Session> findByEventOrderByStartTimeAsc(Event event);
 }

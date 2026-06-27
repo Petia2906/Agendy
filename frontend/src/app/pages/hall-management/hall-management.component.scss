@@ -103,6 +103,24 @@
   }
 }
 
+.hall-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-edit {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+
+  &:hover { background-color: var(--surface); }
+}
+
 .btn-delete {
   background: none;
   border: 1px solid var(--status-cancelled);

@@ -9,6 +9,8 @@ public class UpdateSessionRequest {
     @NotBlank
     private String title;
 
+    private String description;
+
     @NotNull
     private LocalDateTime startTime;
 
@@ -18,8 +20,13 @@ public class UpdateSessionRequest {
     @NotNull
     private Long hallId;
 
+    private Long speakerId;
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public LocalDateTime getStartTime() { return startTime; }
     public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
@@ -29,4 +36,7 @@ public class UpdateSessionRequest {
 
     public Long getHallId() { return hallId; }
     public void setHallId(Long hallId) { this.hallId = hallId; }
+
+    public Long getSpeakerId() { return speakerId; }
+    public void setSpeakerId(Long speakerId) { this.speakerId = speakerId; }
 }

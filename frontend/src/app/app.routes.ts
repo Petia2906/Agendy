@@ -22,13 +22,18 @@ export const routes: Routes = [
   },
   {
     path: 'events/:id/sessions',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     loadComponent: () => import('./pages/session-management/session-management.component').then(m => m.SessionManagementComponent)
   },
   {
     path: 'events/:id/halls',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     loadComponent: () => import('./pages/hall-management/hall-management.component').then(m => m.HallManagementComponent)
+  },
+  {
+    path: 'events/:id/edit',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/create-event/create-event.component').then(m => m.CreateEventComponent)
   },
   {
     path: 'dashboard/create',
@@ -59,6 +64,11 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
+  },
+  {
+    path: 'profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
   },
   {
     path: 'admin/speakers',

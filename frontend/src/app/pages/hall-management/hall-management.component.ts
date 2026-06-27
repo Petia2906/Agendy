@@ -24,6 +24,7 @@ export class HallManagementComponent implements OnInit {
 
   formError = '';
   showForm = false;
+  editingId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,23 +49,50 @@ export class HallManagementComponent implements OnInit {
     });
   }
 
+  openCreateForm() {
+    this.editingId = null;
+    this.form = { name: '', capacity: 0 };
+    this.formError = '';
+    this.showForm = true;
+  }
+
+  editHall(hall: Hall) {
+    this.editingId = hall.id;
+    this.form = { name: hall.name, capacity: hall.capacity };
+    this.formError = '';
+    this.showForm = true;
+  }
+
+  cancelForm() {
+    this.showForm = false;
+    this.editingId = null;
+    this.form = { name: '', capacity: 0 };
+    this.formError = '';
+  }
+
   onSubmit() {
-    this.hallService.createHall(this.eventId, this.form).subscribe({
-      next: (hall) => {
-        this.halls.push(hall);
-        this.form = { name: '', capacity: 0 };
-        this.showForm = false;
-        this.formError = '';
-      },
-      error: () => {
-        this.formError = 'Failed to create hall.';
-      }
-    });
+    if (this.editingId) {
+      this.hallService.updateHall(this.eventId, this.editingId, this.form).subscribe({
+        next: (updated) => {
+          this.halls = this.halls.map(h => h.id === this.editingId ? updated : h);
+          this.cancelForm();
+        },
+        error: () => this.formError = 'Failed to update hall.'
+      });
+    } else {
+      this.hallService.createHall(this.eventId, this.form).subscribe({
+        next: (hall) => {
+          this.halls.push(hall);
+          this.cancelForm();
+        },
+        error: () => this.formError = 'Failed to create hall.'
+      });
+    }
   }
 
   deleteHall(hallId: string) {
     if (!confirm('Delete this hall?')) return;
-    this.hallService.deleteHall(hallId).subscribe({
+    this.hallService.deleteHall(this.eventId, hallId).subscribe({
       next: () => {
         this.halls = this.halls.filter(h => h.id !== hallId);
       },

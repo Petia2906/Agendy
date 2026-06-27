@@ -1,7 +1,7 @@
 <div class="page">
   <app-header>
     <a routerLink="/dashboard/create" class="btn-primary">+ Create Event</a>
-    <a routerLink="/admin/speakers" class="btn-primary">+ Create Speaker</a>
+    <a routerLink="/admin/speakers" class="btn-primary">Speakers</a>
   </app-header>
 
   <div class="content">
@@ -37,6 +37,7 @@
             <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
           </td>
           <td class="actions">
+            <a [routerLink]="['/events', event.id, 'edit']" class="btn-manage">Edit</a>
             <a [routerLink]="['/events', event.id, 'halls']" class="btn-manage">Halls</a>
             <a [routerLink]="['/events', event.id, 'sessions']" class="btn-manage">Sessions</a>
             <button class="btn-delete" (click)="deleteEvent(event.id)">Delete</button>

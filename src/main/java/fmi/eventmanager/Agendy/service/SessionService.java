@@ -72,7 +72,7 @@ public class SessionService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        List<Session> sessions = sessionRepository.findByEvent(event);
+        List<Session> sessions = sessionRepository.findByEventOrderByStartTimeAsc(event);
         List<SessionResponse> responses = new ArrayList<>();
         for (Session s : sessions) {
             responses.add(mapToResponse(s));
@@ -93,9 +93,18 @@ public class SessionService {
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
 
         session.setTitle(request.getTitle());
+        session.setDescription(request.getDescription());
         session.setStartTime(request.getStartTime());
         session.setEndTime(request.getEndTime());
         session.setHall(hall);
+
+        if (request.getSpeakerId() != null) {
+            User speaker = userRepository.findById(request.getSpeakerId())
+                    .orElseThrow(() -> new RuntimeException("Speaker not found"));
+            session.setSpeaker(speaker);
+        } else {
+            session.setSpeaker(null);
+        }
 
         Session saved = sessionRepository.save(session);
         return mapToResponse(saved);
@@ -121,6 +130,7 @@ public class SessionService {
         response.setHallId(session.getHall().getId());
         if (session.getSpeaker() != null) {
             response.setSpeakerId(session.getSpeaker().getId());
+            response.setSpeakerName(session.getSpeaker().getName());
         }
         return response;
     }
