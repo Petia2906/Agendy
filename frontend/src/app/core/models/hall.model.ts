@@ -1,6 +1,5 @@
 export interface Hall {
-  id: string;
-  eventId: string;
+  id: number;
   name: string;
   capacity: number;
 }

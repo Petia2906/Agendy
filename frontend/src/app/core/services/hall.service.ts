@@ -11,19 +11,19 @@ export class HallService {
 
   constructor(private http: HttpClient) {}
 
-  getHallsByEvent(eventId: string): Observable<Hall[]> {
+  getHallsByEvent(eventId: number): Observable<Hall[]> {
     return this.http.get<Hall[]>(`${this.apiUrl}/events/${eventId}/halls`);
   }
 
-  createHall(eventId: string, request: CreateHallRequest): Observable<Hall> {
+  createHall(eventId: number, request: CreateHallRequest): Observable<Hall> {
     return this.http.post<Hall>(`${this.apiUrl}/events/${eventId}/halls`, request);
   }
 
-  updateHall(eventId: string, hallId: string, request: UpdateHallRequest): Observable<Hall> {
+  updateHall(eventId: number, hallId: number, request: UpdateHallRequest): Observable<Hall> {
     return this.http.put<Hall>(`${this.apiUrl}/events/${eventId}/halls/${hallId}`, request);
   }
 
-  deleteHall(eventId: string, hallId: string): Observable<void> {
+  deleteHall(eventId: number, hallId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/events/${eventId}/halls/${hallId}`);
   }
 }
