@@ -43,17 +43,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
 
   .ticket-left {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
 
+    .ticket-event {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
     .ticket-type {
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      color: var(--primary);
     }
 
     .ticket-id {
@@ -102,7 +116,7 @@
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 
   &:hover { background-color: #fdecea; }
 }

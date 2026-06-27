@@ -16,10 +16,10 @@
     </div>
 
     <div class="tickets-list" *ngIf="!loading && !error && tickets.length > 0">
-      <div class="ticket-card" *ngFor="let ticket of tickets">
+      <a class="ticket-card" *ngFor="let ticket of tickets" [routerLink]="['/events', ticket.eventId]">
         <div class="ticket-left">
+          <div class="ticket-event">{{ ticket.eventTitle }}</div>
           <div class="ticket-type">{{ ticket.ticketType }}</div>
-          <div class="ticket-id">ID: {{ ticket.id }}</div>
           <div class="ticket-date">Purchased: {{ ticket.purchasedAt | date:'mediumDate' }}</div>
         </div>
         <div class="ticket-right">
@@ -27,11 +27,11 @@
           <span class="status" [class]="ticket.status.toLowerCase()">{{ ticket.status }}</span>
           <button class="btn-cancel"
                   *ngIf="ticket.status !== 'CANCELLED'"
-                  (click)="cancelTicket(ticket.id)">
+                  (click)="$event.preventDefault(); $event.stopPropagation(); cancelTicket(ticket.id)">
             Cancel
           </button>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>

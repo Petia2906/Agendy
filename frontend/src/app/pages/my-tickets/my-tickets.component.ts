@@ -31,7 +31,7 @@ export class MyTicketsComponent implements OnInit {
     });
   }
 
-  cancelTicket(ticketId: string) {
+  cancelTicket(ticketId: number) {
     if (!confirm('Cancel this ticket?')) return;
     this.ticketService.cancelTicket(ticketId).subscribe({
       next: () => {
