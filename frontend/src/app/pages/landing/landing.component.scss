@@ -6,12 +6,19 @@
 
 .hero {
   flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: space-between;
+  gap: 4rem;
   padding: 4rem 2rem;
+}
+
+.hero-content {
+  flex: 1;
+  text-align: left;
 
   h1 {
     font-size: 3.5rem;
@@ -22,11 +29,12 @@
   p {
     font-size: 1.2rem;
     color: var(--text-muted);
-    max-width: 500px;
+    max-width: 460px;
     margin-bottom: 2.5rem;
   }
 
   .btn-primary {
+    display: inline-block;
     background-color: var(--primary);
     color: white;
     padding: 0.75rem 2rem;
@@ -43,4 +51,28 @@
       background-color: var(--primary-hover);
     }
   }
+}
+
+.hero-graphic {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 860px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-content {
+    text-align: center;
+
+    h1 { font-size: 2.5rem; }
+    p { margin-left: auto; margin-right: auto; }
+  }
+
+  .hero-graphic { order: -1; }
 }

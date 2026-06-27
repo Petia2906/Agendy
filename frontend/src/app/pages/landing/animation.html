@@ -1,0 +1,57 @@
+<svg class="hero-illustration" viewBox="0 0 440 380" fill="none"
+     xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="An illustrated calendar with floating event cards">
+  <!-- soft glow -->
+  <circle class="halo" cx="225" cy="195" r="165" fill="var(--primary)" />
+
+  <!-- floating sparkles -->
+  <circle class="float-fast" cx="370" cy="70" r="9" fill="var(--primary)" opacity="0.35" />
+  <circle class="float-slow" cx="60" cy="110" r="6" fill="var(--primary-hover)" opacity="0.45" />
+  <circle class="float-fast" cx="70" cy="312" r="7" fill="var(--primary)" opacity="0.3" />
+
+  <!-- calendar -->
+  <g class="float-slow">
+    <rect x="105" y="78" width="230" height="224" rx="24" fill="#ffffff" stroke="#f1d6f1" stroke-width="2" />
+    <!-- header -->
+    <path d="M105 102 a24 24 0 0 1 24 -24 h182 a24 24 0 0 1 24 24 v26 h-230 z" fill="var(--primary)" />
+    <!-- binding rings -->
+    <rect x="150" y="62" width="11" height="34" rx="5.5" fill="var(--primary-hover)" />
+    <rect x="279" y="62" width="11" height="34" rx="5.5" fill="var(--primary-hover)" />
+    <!-- date cells -->
+    <rect x="130" y="150" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="178" y="150" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="226" y="150" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="274" y="150" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="130" y="192" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect class="active-day" x="178" y="192" width="36" height="32" rx="7" fill="var(--primary)" />
+    <rect x="226" y="192" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="274" y="192" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="130" y="234" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="178" y="234" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="226" y="234" width="36" height="32" rx="7" fill="#f7e6f7" />
+    <rect x="274" y="234" width="36" height="32" rx="7" fill="#f7e6f7" />
+  </g>
+
+  <!-- floating card: top-right -->
+  <g class="card-a">
+    <rect x="285" y="135" width="140" height="56" rx="14" fill="#ffffff" stroke="#f1d6f1" stroke-width="1.5" />
+    <circle cx="310" cy="163" r="11" fill="var(--primary)" />
+    <rect x="329" y="150" width="80" height="9" rx="4.5" fill="#ecd3ec" />
+    <rect x="329" y="168" width="54" height="8" rx="4" fill="#f3e4f3" />
+  </g>
+
+  <!-- floating card: bottom-left -->
+  <g class="card-b">
+    <rect x="22" y="232" width="150" height="56" rx="14" fill="#ffffff" stroke="#f1d6f1" stroke-width="1.5" />
+    <rect x="38" y="248" width="24" height="24" rx="7" fill="var(--primary-hover)" />
+    <rect x="74" y="250" width="84" height="9" rx="4.5" fill="#ecd3ec" />
+    <rect x="74" y="268" width="58" height="8" rx="4" fill="#f3e4f3" />
+  </g>
+
+  <!-- check badge -->
+  <g class="badge float-fast">
+    <circle cx="330" cy="272" r="26" fill="var(--primary)" />
+    <path d="M319 272 l8 8 l14 -16" stroke="#ffffff" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+</svg>
