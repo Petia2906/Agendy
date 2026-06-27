@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SpeakerService } from '../../core/services/speaker.service';
 import { Speaker, CreateSpeakerRequest } from '../../core/models/speaker.model';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-speaker-management',
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule, HeaderComponent],
   templateUrl: './speaker-management.component.html',
   styleUrl: './speaker-management.component.scss'
 })
