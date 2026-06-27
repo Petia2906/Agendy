@@ -3,6 +3,7 @@
   <div class="nav-links">
     <ng-content></ng-content>
     @if (authService.isLoggedIn()) {
+      <a routerLink="/profile" class="nav-profile">Profile</a>
       <button class="btn-logout" (click)="logout()">Log out</button>
     }
   </div>

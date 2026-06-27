@@ -86,8 +86,53 @@
               <h3>{{ session.title }}</h3>
               <span class="hall-badge">{{ getHallName(session.hallId) }}</span>
             </div>
+            <p class="session-speaker" *ngIf="session.speakerName">🎤 {{ session.speakerName }}</p>
             <p *ngIf="session.description">{{ session.description }}</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <h2>Feedback</h2>
+
+      <div class="feedback-form" *ngIf="canLeaveFeedback">
+        <h3>Leave your feedback</h3>
+        <div class="rating-field">
+          <label>Rating</label>
+          <select [(ngModel)]="feedbackForm.rating" name="rating">
+            <option [ngValue]="5">★★★★★ (5)</option>
+            <option [ngValue]="4">★★★★ (4)</option>
+            <option [ngValue]="3">★★★ (3)</option>
+            <option [ngValue]="2">★★ (2)</option>
+            <option [ngValue]="1">★ (1)</option>
+          </select>
+        </div>
+        <textarea [(ngModel)]="feedbackForm.comment" name="comment" rows="3"
+                  placeholder="Share your thoughts about this event..."></textarea>
+        <div class="feedback-error" *ngIf="feedbackError">{{ feedbackError }}</div>
+        <button class="submit-feedback" (click)="submitFeedback()" [disabled]="submittingFeedback">
+          {{ submittingFeedback ? 'Submitting...' : 'Submit Feedback' }}
+        </button>
+      </div>
+
+      <p class="feedback-note" *ngIf="isAttendee && hasTicket && alreadyReviewed">
+        You've already left feedback for this event.
+      </p>
+      <p class="feedback-note" *ngIf="isAttendee && hasTicket && !alreadyReviewed && event.status !== 'PAST'">
+        You can leave feedback once the event has passed.
+      </p>
+
+      <div class="empty" *ngIf="feedbacks.length === 0">No feedback yet.</div>
+
+      <div class="feedback-list">
+        <div class="feedback-card" *ngFor="let fb of feedbacks">
+          <div class="feedback-head">
+            <span class="feedback-author">{{ fb.userName }}</span>
+            <span class="feedback-stars">{{ '★'.repeat(fb.rating) }}{{ '☆'.repeat(5 - fb.rating) }}</span>
+          </div>
+          <p class="feedback-comment" *ngIf="fb.comment">{{ fb.comment }}</p>
+          <span class="feedback-date">{{ fb.createdAt | date:'mediumDate' }}</span>
         </div>
       </div>
     </div>
