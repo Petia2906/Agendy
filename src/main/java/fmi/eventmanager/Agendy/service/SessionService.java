@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,8 @@ public class SessionService {
 
         Hall hall = hallRepository.findById(request.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
+
+        validateSessionTimes(event, request.getStartTime(), request.getEndTime());
 
         Session session = new Session(
                 event,
@@ -92,6 +96,8 @@ public class SessionService {
         Hall hall = hallRepository.findById(request.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found"));
 
+        validateSessionTimes(session.getEvent(), request.getStartTime(), request.getEndTime());
+
         session.setTitle(request.getTitle());
         session.setDescription(request.getDescription());
         session.setStartTime(request.getStartTime());
@@ -133,5 +139,29 @@ public class SessionService {
             response.setSpeakerName(session.getSpeaker().getName());
         }
         return response;
+    }
+
+    private void validateSessionTimes(Event event, LocalDateTime startTime, LocalDateTime endTime) {
+        LocalDate eventDate = event.getEventDate().toLocalDate();
+
+        if (!startTime.toLocalDate().equals(eventDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Session start time must be on the same date as the event (" + eventDate + ")");
+        }
+
+        if (!endTime.toLocalDate().equals(eventDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Session end time must be on the same date as the event (" + eventDate + ")");
+        }
+
+        if (!endTime.isAfter(startTime)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Session end time must be after the start time");
+        }
+
+        if (eventDate.isEqual(LocalDate.now()) && startTime.isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Session start time cannot be in the past");
+        }
     }
 }

@@ -45,12 +45,15 @@ public class EventService {
     }
 
     public EventResponse createEvent(CreateEventRequest request, Long organizerId) {
-
         User user = userRepository.findById(organizerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         if (user.getRole() != Role.ADMIN) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admins can add events!");
+        }
+
+        if (request.getEventDate().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event date cannot be in the past");
         }
 
         Event event = new Event(
@@ -98,6 +101,10 @@ public class EventService {
 
         if (!event.getOrganizerId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the organizer of this event");
+        }
+
+        if (request.getEventDate().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Event date cannot be in the past");
         }
 
         event.setTitle(request.getTitle());

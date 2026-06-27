@@ -1,13 +1,9 @@
 package fmi.eventmanager.Agendy.controller;
 
-import fmi.eventmanager.Agendy.model.dto.EventAnalyticsResponse;
 import fmi.eventmanager.Agendy.model.dto.FeedbackRequest;
 import fmi.eventmanager.Agendy.model.dto.FeedbackResponse;
 import fmi.eventmanager.Agendy.model.entity.Feedback;
-import fmi.eventmanager.Agendy.model.entity.Ticket;
-import fmi.eventmanager.Agendy.model.entity.TicketStatus;
 import fmi.eventmanager.Agendy.service.FeedbackService;
-import fmi.eventmanager.Agendy.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
