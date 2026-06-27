@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Speaker, CreateSpeakerRequest } from '../models/speaker.model';
+import { Speaker, CreateSpeakerRequest, UpdateSpeakerRequest } from '../models/speaker.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +17,9 @@ export class SpeakerService {
 
   getAllSpeakers(): Observable<Speaker[]> {
     return this.http.get<Speaker[]>(this.apiUrl);
+  }
+
+  updateSpeaker(speakerId: number, request: UpdateSpeakerRequest): Observable<Speaker> {
+    return this.http.put<Speaker>(`${this.apiUrl}/${speakerId}`, request);
   }
 }

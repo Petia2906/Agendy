@@ -2,6 +2,7 @@ package fmi.eventmanager.Agendy.service;
 
 import fmi.eventmanager.Agendy.model.dto.CreateSpeakerRequest;
 import fmi.eventmanager.Agendy.model.dto.SpeakerResponse;
+import fmi.eventmanager.Agendy.model.dto.UpdateSpeakerRequest;
 import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.Speaker;
 import fmi.eventmanager.Agendy.model.entity.User;
@@ -48,6 +49,24 @@ public class SpeakerService {
         speaker.setOrganization(request.getOrganization());
 
         return speakerRepository.save(speaker);
+    }
+
+    @Transactional
+    public SpeakerResponse updateSpeaker(Long userId, Long speakerId, UpdateSpeakerRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid user making request"));
+        if (user.getRole() != Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only admin users can edit speakers!");
+        }
+        Speaker speaker = speakerRepository.findById(speakerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Speaker not found"));
+
+        speaker.setName(request.getName());
+        speaker.setBio(request.getBio());
+        speaker.setPhotoUrl(request.getPhotoUrl());
+        speaker.setOrganization(request.getOrganization());
+
+        return mapToResponse(speakerRepository.save(speaker));
     }
 
     public List<SpeakerResponse> getAllSpeakers() {

@@ -2,6 +2,7 @@ package fmi.eventmanager.Agendy.controller;
 
 import fmi.eventmanager.Agendy.model.dto.CreateSpeakerRequest;
 import fmi.eventmanager.Agendy.model.dto.SpeakerResponse;
+import fmi.eventmanager.Agendy.model.dto.UpdateSpeakerRequest;
 import fmi.eventmanager.Agendy.model.entity.Speaker;
 import fmi.eventmanager.Agendy.service.SpeakerService;
 import jakarta.validation.Valid;
@@ -36,5 +37,12 @@ public class SpeakerController {
     @GetMapping
     public ResponseEntity<List<SpeakerResponse>> getAllSpeakers() {
         return ResponseEntity.ok(speakerService.getAllSpeakers());
+    }
+
+    @PutMapping("/{speakerId}")
+    public ResponseEntity<?> updateSpeaker(@PathVariable Long speakerId,
+                                           @RequestBody @Valid UpdateSpeakerRequest request,
+                                           @AuthenticationPrincipal Long userId) {
+        return ResponseEntity.ok(speakerService.updateSpeaker(userId, speakerId, request));
     }
 }

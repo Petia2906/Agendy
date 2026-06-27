@@ -6,13 +6,13 @@
   <div class="content">
     <div class="header">
       <h1>Manage Speakers</h1>
-      <button class="btn-primary" (click)="showForm = !showForm">
+      <button class="btn-primary" (click)="showForm ? cancelForm() : openCreateForm()">
         {{ showForm ? 'Cancel' : '+ Add Speaker' }}
       </button>
     </div>
 
     <div class="add-form" *ngIf="showForm">
-      <h2>New Speaker</h2>
+      <h2>{{ editingId ? 'Edit Speaker' : 'New Speaker' }}</h2>
       <div class="error" *ngIf="formError">{{ formError }}</div>
       <form (ngSubmit)="onSubmit()" #speakerForm="ngForm">
         <div class="field">
@@ -21,13 +21,13 @@
                  placeholder="e.g. Dr. Jane Smith" />
           <span class="validation-error" *ngIf="name.invalid && name.touched">Name is required.</span>
         </div>
-        <div class="field">
+        <div class="field" *ngIf="!editingId">
           <label>Email</label>
           <input type="email" [(ngModel)]="form.email" name="email" required email #email="ngModel"
                  placeholder="speaker@example.com" />
           <span class="validation-error" *ngIf="email.invalid && email.touched">Valid email is required.</span>
         </div>
-        <div class="field">
+        <div class="field" *ngIf="!editingId">
           <label>Password</label>
           <input type="password" [(ngModel)]="form.password" name="password" required #password="ngModel"
                  placeholder="••••••••" />
@@ -49,7 +49,9 @@
           <textarea [(ngModel)]="form.bio" name="bio" rows="3"
                     placeholder="Short biography..."></textarea>
         </div>
-        <button type="submit" class="btn-primary" [disabled]="speakerForm.invalid">Create Speaker</button>
+        <button type="submit" class="btn-primary" [disabled]="speakerForm.invalid">
+          {{ editingId ? 'Save Changes' : 'Create Speaker' }}
+        </button>
       </form>
     </div>
 
@@ -66,6 +68,7 @@
           <span>{{ speaker.email }}</span>
           <span *ngIf="speaker.organization"> · {{ speaker.organization }}</span>
         </div>
+        <button class="btn-edit" (click)="editSpeaker(speaker)">Edit</button>
       </div>
     </div>
   </div>

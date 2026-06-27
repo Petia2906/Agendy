@@ -15,3 +15,10 @@ export interface CreateSpeakerRequest {
   photoUrl?: string;
   organization?: string;
 }
+
+export interface UpdateSpeakerRequest {
+  name: string;
+  bio?: string;
+  photoUrl?: string;
+  organization?: string;
+}
