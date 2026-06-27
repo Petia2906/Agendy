@@ -1,7 +1,10 @@
+<app-header>
+  <a routerLink="/events/{{ eventId }}">Back to Event</a>
+</app-header>
+
 <div class="analytics-container">
   <div class="analytics-header">
     <h1>Event Analytics</h1>
-    <a routerLink="/events/{{ eventId }}" class="back-button">← Back to Event</a>
   </div>
 
   <div *ngIf="loading" class="loading">Loading analytics...</div>
