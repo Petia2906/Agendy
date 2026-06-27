@@ -6,6 +6,7 @@ import fmi.eventmanager.Agendy.model.entity.Event;
 import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.Ticket;
 import fmi.eventmanager.Agendy.model.entity.TicketStatus;
+import fmi.eventmanager.Agendy.model.entity.TicketType;
 import fmi.eventmanager.Agendy.model.entity.User;
 import fmi.eventmanager.Agendy.repository.EventRepository;
 import fmi.eventmanager.Agendy.repository.TicketRepository;
@@ -97,7 +98,7 @@ public class TicketService {
         response.setEventId(ticket.getEvent().getId());
         response.setEventTitle(ticket.getEvent().getTitle());
         response.setUserId(ticket.getUser().getId());
-        response.setTicketType(ticket.getTicketType());
+        response.setTicketType(TicketType.REGULAR);
         response.setPrice(ticket.getPrice());
         response.setStatus(ticket.getStatus());
         response.setPurchasedAt(ticket.getPurchasedAt());

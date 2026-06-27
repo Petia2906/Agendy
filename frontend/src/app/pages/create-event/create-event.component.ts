@@ -9,7 +9,7 @@ import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-create-event',
-  imports: [RouterLink, FormsModule, CommonModule],
+  imports: [RouterLink, FormsModule, CommonModule, HeaderComponent],
   templateUrl: './create-event.component.html',
   styleUrl: './create-event.component.scss'
 })
@@ -24,7 +24,6 @@ export class CreateEventComponent implements OnInit {
   };
 
   error = '';
-  editingId: string | null = null;
   minDate: string = '';
   editingId: number | null = null;
 
@@ -36,8 +35,7 @@ export class CreateEventComponent implements OnInit {
 
   ngOnInit() {
     this.minDate = new Date().toISOString().split('T')[0];
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const id = Number(idParam);
@@ -67,12 +65,16 @@ export class CreateEventComponent implements OnInit {
     if (this.editingId) {
       this.eventService.updateEvent(this.editingId, payload).subscribe({
         next: () => this.router.navigate(['/dashboard']),
-        error: () => this.error = 'Failed to update event. Please try again.'
+        error: (err: HttpErrorResponse) => {
+          this.error = err.error?.message || 'Failed to update event. Please try again.';
+        }
       });
     } else {
       this.eventService.createEvent(payload).subscribe({
         next: () => this.router.navigate(['/dashboard']),
-        error: () => this.error = 'Failed to create event. Please try again.'
+        error: (err: HttpErrorResponse) => {
+          this.error = err.error?.message || 'Failed to create event. Please try again.';
+        }
       });
     }
   }

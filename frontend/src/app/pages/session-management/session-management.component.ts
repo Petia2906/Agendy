@@ -16,7 +16,7 @@ import { Speaker } from '../../core/models/speaker.model';
   styleUrl: './session-management.component.scss'
 })
 export class SessionManagementComponent implements OnInit {
-  eventId: string = '';
+  eventId: number = 0;
   sessions: Session[] = [];
   halls: Hall[] = [];
   speakers: Speaker[] = [];
@@ -30,13 +30,12 @@ export class SessionManagementComponent implements OnInit {
     description: '',
     startTime: '',
     endTime: '',
-    hallId: '',
+    hallId: null,
     speakerId: null
   };
 
   speakerSearch = '';
   showSpeakerDropdown = false;
-  editingId: string | null = null;
   eventDateStr: string = '';
   minDateTime: string = '';
   isEventToday = false;
@@ -50,7 +49,7 @@ export class SessionManagementComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('id')!;
+    this.eventId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadSessions();
     this.loadHalls();
     this.loadSpeakers();
@@ -74,7 +73,7 @@ export class SessionManagementComponent implements OnInit {
 
   onSpeakerInput() {
     this.showSpeakerDropdown = true;
-    this.form.speakerId = null; // typing invalidates a previous pick until re-selected
+    this.form.speakerId = null;
   }
 
   selectSpeaker(speaker: Speaker) {
@@ -109,9 +108,13 @@ export class SessionManagementComponent implements OnInit {
     });
   }
 
-  getHallName(hallId: string): string {
+  getHallName(hallId: number | null): string {
     const hall = this.halls.find(h => h.id === hallId);
     return hall ? hall.name : 'Unknown Hall';
+  }
+
+  get minTime(): string {
+    return this.isEventToday ? new Date().toTimeString().slice(0, 5) : '';
   }
 
   openCreateForm() {
@@ -142,7 +145,7 @@ export class SessionManagementComponent implements OnInit {
   }
 
   private resetForm() {
-    this.form = { title: '', description: '', startTime: '', endTime: '', hallId: '', speakerId: null };
+    this.form = { title: '', description: '', startTime: '', endTime: '', hallId: null, speakerId: null };
     this.speakerSearch = '';
     this.formError = '';
   }
@@ -173,7 +176,7 @@ export class SessionManagementComponent implements OnInit {
     }
   }
 
-  deleteSession(sessionId: string) {
+  deleteSession(sessionId: number) {
     if (!confirm('Delete this session?')) return;
     this.sessionService.deleteSession(sessionId).subscribe({
       next: () => {

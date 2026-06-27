@@ -36,13 +36,6 @@
           </div>
 
           <ng-container *ngIf="!purchaseSuccess">
-            <div class="ticket-type">
-              <label>Ticket Type</label>
-              <select [(ngModel)]="selectedTicketType" name="ticketType">
-                <option value="REGULAR">Regular</option>
-                <option value="VIP">VIP</option>
-              </select>
-            </div>
             <div class="purchase-error" *ngIf="purchaseError">{{ purchaseError }}</div>
             <button class="buy-button" (click)="buyTicket()" [disabled]="purchasing">
               {{ purchasing ? 'Processing...' : 'Buy Ticket - $' + event.price }}
