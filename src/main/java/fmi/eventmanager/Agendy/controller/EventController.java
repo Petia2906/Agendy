@@ -36,7 +36,7 @@ public class EventController {
     public ResponseEntity<EventResponse> createEvent(@RequestBody @Valid CreateEventRequest request,
                                                      @AuthenticationPrincipal Long userId) {
         EventResponse response = eventService.createEvent(request, userId);
-        return ResponseEntity.status(201).body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{eventId}")

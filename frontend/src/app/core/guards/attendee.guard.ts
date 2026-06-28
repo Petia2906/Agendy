@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { homeRouteForRole } from '../utils/role-redirect.util';
 
 export const attendeeGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -12,7 +13,7 @@ export const attendeeGuard: CanActivateFn = () => {
   }
 
   return authService.getCurrentUser().pipe(
-    map(user => user.role === 'ATTENDEE' ? true : router.createUrlTree(['/dashboard'])),
+    map(user => user.role === 'ATTENDEE' ? true : router.createUrlTree([homeRouteForRole(user.role)])),
     catchError(() => of(router.createUrlTree(['/login'])))
   );
 };

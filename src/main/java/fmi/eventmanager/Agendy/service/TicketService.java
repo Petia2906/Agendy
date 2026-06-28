@@ -6,6 +6,7 @@ import fmi.eventmanager.Agendy.model.entity.Event;
 import fmi.eventmanager.Agendy.model.entity.Role;
 import fmi.eventmanager.Agendy.model.entity.Ticket;
 import fmi.eventmanager.Agendy.model.entity.TicketStatus;
+import fmi.eventmanager.Agendy.model.entity.TicketType;
 import fmi.eventmanager.Agendy.model.entity.User;
 import fmi.eventmanager.Agendy.repository.EventRepository;
 import fmi.eventmanager.Agendy.repository.TicketRepository;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -42,7 +43,7 @@ public class TicketService {
         }
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found!"));
-        if (event.getEventDate().isBefore(LocalDateTime.now())) {
+        if (event.getEventDate().toLocalDate().isBefore(LocalDate.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot purchase tickets for past events!");
         }
         boolean alreadyPurchased = ticketRepository.existsByEventIdAndUserId(eventId, userId);
@@ -97,7 +98,7 @@ public class TicketService {
         response.setEventId(ticket.getEvent().getId());
         response.setEventTitle(ticket.getEvent().getTitle());
         response.setUserId(ticket.getUser().getId());
-        response.setTicketType(ticket.getTicketType());
+        response.setTicketType(TicketType.REGULAR);
         response.setPrice(ticket.getPrice());
         response.setStatus(ticket.getStatus());
         response.setPurchasedAt(ticket.getPurchasedAt());

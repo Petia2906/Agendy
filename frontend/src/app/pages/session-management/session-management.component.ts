@@ -8,6 +8,7 @@ import { SpeakerService } from '../../core/services/speaker.service';
 import { Session, CreateSessionRequest } from '../../core/models/session.model';
 import { Hall } from '../../core/models/hall.model';
 import { Speaker } from '../../core/models/speaker.model';
+import { EventService } from '../../core/services/event.service';
 
 @Component({
   selector: 'app-session-management',
@@ -16,7 +17,7 @@ import { Speaker } from '../../core/models/speaker.model';
   styleUrl: './session-management.component.scss'
 })
 export class SessionManagementComponent implements OnInit {
-  eventId!: number;
+  eventId: number = 0;
   sessions: Session[] = [];
   halls: Hall[] = [];
   speakers: Speaker[] = [];
@@ -36,13 +37,17 @@ export class SessionManagementComponent implements OnInit {
 
   speakerSearch = '';
   showSpeakerDropdown = false;
+  eventDateStr: string = '';
+  minDateTime: string = '';
+  isEventToday = false;
   editingId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private sessionService: SessionService,
     private hallService: HallService,
-    private speakerService: SpeakerService
+    private speakerService: SpeakerService,
+    private eventService: EventService
   ) {}
 
   ngOnInit() {
@@ -50,11 +55,26 @@ export class SessionManagementComponent implements OnInit {
     this.loadSessions();
     this.loadHalls();
     this.loadSpeakers();
+    this.loadEvent();
   }
 
   loadSpeakers() {
     this.speakerService.getAllSpeakers().subscribe({
       next: (data) => this.speakers = data,
+      error: () => {}
+    });
+  }
+
+  loadEvent() {
+    this.eventService.getEventById(this.eventId).subscribe({
+      next: (event) => {
+        this.eventDateStr = event.eventDate.slice(0, 10);
+        const today = new Date().toISOString().slice(0, 10);
+        this.isEventToday = this.eventDateStr === today;
+        this.minDateTime = this.isEventToday
+          ? new Date().toISOString().slice(0, 16)
+          : '';
+      },
       error: () => {}
     });
   }
@@ -70,7 +90,7 @@ export class SessionManagementComponent implements OnInit {
 
   onSpeakerInput() {
     this.showSpeakerDropdown = true;
-    this.form.speakerId = null; // typing invalidates a previous pick until re-selected
+    this.form.speakerId = null;
   }
 
   selectSpeaker(speaker: Speaker) {
@@ -105,9 +125,13 @@ export class SessionManagementComponent implements OnInit {
     });
   }
 
-  getHallName(hallId: number): string {
+  getHallName(hallId: number | null): string {
     const hall = this.halls.find(h => h.id === hallId);
     return hall ? hall.name : 'Unknown Hall';
+  }
+
+  get minTime(): string {
+    return this.isEventToday ? new Date().toTimeString().slice(0, 5) : '';
   }
 
   openCreateForm() {
@@ -124,7 +148,7 @@ export class SessionManagementComponent implements OnInit {
       startTime: session.startTime ? session.startTime.slice(0, 16) : '',
       endTime: session.endTime ? session.endTime.slice(0, 16) : '',
       hallId: session.hallId,
-      speakerId: session.speakerId ?? null
+      speakerId: session.speakerId ? Number(session.speakerId) : null
     };
     this.speakerSearch = session.speakerName || '';
     this.formError = '';
@@ -146,8 +170,8 @@ export class SessionManagementComponent implements OnInit {
   onSubmit() {
     const payload = {
       ...this.form,
-      startTime: this.form.startTime + ':00',
-      endTime: this.form.endTime + ':00'
+      startTime: this.eventDateStr + 'T' + this.form.startTime + ':00',
+      endTime: this.eventDateStr + 'T' + this.form.endTime + ':00'
     };
 
     if (this.editingId) {

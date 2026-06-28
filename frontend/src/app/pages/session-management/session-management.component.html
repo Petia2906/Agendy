@@ -30,14 +30,24 @@
 
         <div class="row">
           <div class="field">
-            <label>Start Time</label>
-            <input type="datetime-local" [(ngModel)]="form.startTime" name="startTime" required #startTime="ngModel" />
-            <span class="validation-error" *ngIf="startTime.invalid && startTime.touched">Start time is required.</span>
+            <label>Event Date</label>
+            <div class="static-value">{{ eventDateStr | date:'fullDate' }}</div>
           </div>
-          <div class="field">
-            <label>End Time</label>
-            <input type="datetime-local" [(ngModel)]="form.endTime" name="endTime" required #endTime="ngModel" />
-            <span class="validation-error" *ngIf="endTime.invalid && endTime.touched">End time is required.</span>
+
+          <div class="row">
+            <div class="field">
+              <label>Start Time</label>
+              <input type="time" [(ngModel)]="form.startTime" name="startTime" required
+                     #startTime="ngModel" [min]="minTime" />
+              <span class="validation-error" *ngIf="startTime.invalid && startTime.touched">Start time is required.</span>
+            </div>
+
+            <div class="field">
+              <label>End Time</label>
+              <input type="time" [(ngModel)]="form.endTime" name="endTime" required
+                     #endTime="ngModel" />
+              <span class="validation-error" *ngIf="endTime.invalid && endTime.touched">End time is required.</span>
+            </div>
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { noAuthGuard } from './core/guards/no-auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { attendeeGuard } from './core/guards/attendee.guard';
+import { speakerGuard } from './core/guards/speaker.guard';
 
 export const routes: Routes = [
   {
@@ -54,6 +55,11 @@ export const routes: Routes = [
     path: 'events/:id/analytics',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/analytics/analytics.component').then(m => m.AnalyticsComponent)
+  },
+  {
+    path: 'speaker/events',
+    canActivate: [speakerGuard],
+    loadComponent: () => import('./pages/speaker-events/speaker-events.component').then(m => m.SpeakerEventsComponent)
   },
   {
     path: 'my-tickets',

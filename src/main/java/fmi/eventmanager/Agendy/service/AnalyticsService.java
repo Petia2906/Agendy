@@ -77,6 +77,8 @@ public class AnalyticsService {
         response.setEventId(ticket.getEvent().getId());
         response.setEventTitle(ticket.getEvent().getTitle());
         response.setUserId(ticket.getUser().getId());
+        response.setUsername(ticket.getUser().getName());
+        response.setEmail(ticket.getUser().getEmail());
         response.setTicketType(ticket.getTicketType());
         response.setPrice(ticket.getPrice());
         response.setStatus(ticket.getStatus());
