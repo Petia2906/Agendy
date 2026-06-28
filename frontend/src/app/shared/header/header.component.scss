@@ -2,14 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 4rem;
+  padding: 0.5rem 4rem;
   background: white;
   border-bottom: 1px solid var(--border);
 
   .logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    color: var(--primary);
+    height: 80px;
+    width: auto;
+    display: block;
     cursor: pointer;
     user-select: none;
   }
