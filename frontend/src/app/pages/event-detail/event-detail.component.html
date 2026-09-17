@@ -1,0 +1,128 @@
+<div class="page" *ngIf="event">
+  <app-header>
+    <a routerLink="/my-tickets" *ngIf="isAttendee">My Tickets</a>
+  </app-header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="status" [class]="event.status.toLowerCase()">{{ event.status }}</span>
+      <h1>{{ event.title }}</h1>
+      <p class="description">{{ event.description }}</p>
+
+      <div class="event-panel">
+        <div class="meta">
+          <div class="meta-item">
+            <span class="label">Venue</span>
+            <span class="value">{{ event.venue }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Date</span>
+            <span class="value">{{ event.eventDate | date:'longDate' }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Capacity</span>
+            <span class="value">{{ event.capacity }} seats</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Price</span>
+            <span class="value">${{ event.price }}</span>
+          </div>
+        </div>
+
+        <div class="purchase" *ngIf="isAttendee">
+          <div class="purchase-success" *ngIf="purchaseSuccess">
+            Ticket purchased! View it in
+            <a routerLink="/my-tickets">My Tickets</a>.
+          </div>
+
+          <ng-container *ngIf="!purchaseSuccess">
+            <div class="purchase-error" *ngIf="purchaseError">{{ purchaseError }}</div>
+            <button class="buy-button" (click)="buyTicket()" [disabled]="purchasing">
+              {{ purchasing ? 'Processing...' : 'Buy Ticket - $' + event.price }}
+            </button>
+          </ng-container>
+        </div>
+
+        <div class="actions" *ngIf="isOwner">
+          <a routerLink="/events/{{ event.id }}/analytics" class="analytics-button">
+            View Analytics
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="schedule-section">
+      <h2>Schedule</h2>
+
+      <div class="empty" *ngIf="sessions.length === 0">No sessions scheduled yet.</div>
+
+      <div class="hall-columns" *ngIf="sessions.length > 0">
+        <div class="hall-column" *ngFor="let group of sessionsByHall">
+          <h3 class="hall-column-title">{{ group.hallName }}</h3>
+          <div class="timeline">
+            <div class="timeline-item" *ngFor="let session of group.sessions">
+              <div class="timeline-dot"></div>
+              <div class="session-card">
+                <div class="session-time">
+                  {{ session.startTime | date:'shortTime' }} – {{ session.endTime | date:'shortTime' }}
+                </div>
+                <h4 class="session-title">{{ session.title }}</h4>
+                <p class="session-speaker" *ngIf="session.speakerName">{{ session.speakerName }}</p>
+                <p class="session-desc" *ngIf="session.description">{{ session.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <h2>Feedback</h2>
+
+      <div class="feedback-form" *ngIf="canLeaveFeedback">
+        <h3>Leave your feedback</h3>
+        <div class="rating-field">
+          <label>Rating</label>
+          <select [(ngModel)]="feedbackForm.rating" name="rating">
+            <option [ngValue]="5">★★★★★ (5)</option>
+            <option [ngValue]="4">★★★★ (4)</option>
+            <option [ngValue]="3">★★★ (3)</option>
+            <option [ngValue]="2">★★ (2)</option>
+            <option [ngValue]="1">★ (1)</option>
+          </select>
+        </div>
+        <textarea [(ngModel)]="feedbackForm.comment" name="comment" rows="3"
+                  placeholder="Share your thoughts about this event..."></textarea>
+        <div class="feedback-error" *ngIf="feedbackError">{{ feedbackError }}</div>
+        <button class="submit-feedback" (click)="submitFeedback()" [disabled]="submittingFeedback">
+          {{ submittingFeedback ? 'Submitting...' : 'Submit Feedback' }}
+        </button>
+      </div>
+
+      <p class="feedback-note" *ngIf="isAttendee && hasTicket && alreadyReviewed">
+        You've already left feedback for this event.
+      </p>
+      <p class="feedback-note" *ngIf="isAttendee && hasTicket && !alreadyReviewed && event.status !== 'PAST'">
+        You can leave feedback once the event has passed.
+      </p>
+
+      <div class="empty" *ngIf="feedbacks.length === 0">No feedback yet.</div>
+
+      <div class="feedback-list">
+        <div class="feedback-card" *ngFor="let fb of feedbacks">
+          <div class="feedback-head">
+            <span class="feedback-author">{{ fb.userName }}</span>
+            <span class="feedback-stars">{{ '★'.repeat(fb.rating) }}{{ '☆'.repeat(5 - fb.rating) }}</span>
+          </div>
+          <p class="feedback-comment" *ngIf="fb.comment">{{ fb.comment }}</p>
+          <span class="feedback-date">{{ fb.createdAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">Loading event...</div>
+<div class="error-msg" *ngIf="error">{{ error }}</div>

@@ -1,0 +1,22 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Welcome back</h1>
+    <p class="subtitle">Log in to your Agendy account</p>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="form.email" name="email" required placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="form.password" name="password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn-primary">Log in</button>
+    </form>
+
+    <p class="switch">Don't have an account? <a routerLink="/register">Register</a></p>
+  </div>
+</div>

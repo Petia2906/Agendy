@@ -1,0 +1,69 @@
+package fmi.eventmanager.Agendy.controller;
+
+import fmi.eventmanager.Agendy.model.dto.FeedbackRequest;
+import fmi.eventmanager.Agendy.model.dto.FeedbackResponse;
+import fmi.eventmanager.Agendy.model.entity.Feedback;
+import fmi.eventmanager.Agendy.service.FeedbackService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/events/{eventId}")
+public class FeedbackController {
+    private static final int MIN_RATING = 1;
+    private static final int MAX_RATING = 5;
+
+    private final FeedbackService feedbackService;
+
+    public FeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
+
+    @PostMapping("/feedback")
+    public ResponseEntity<?> createFeedback(
+            @PathVariable Long eventId,
+            @AuthenticationPrincipal Long userId,
+            @RequestBody FeedbackRequest dto) {
+        try {
+            Feedback saved = feedbackService.saveFeedback(eventId, userId, dto.getRating(), dto.getComment());
+            return ResponseEntity.status(HttpStatus.CREATED).body(convertToResponse(saved, eventId, userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/feedback")
+    public ResponseEntity<List<FeedbackResponse>> getEventFeedback(@PathVariable Long eventId) {
+        List<Feedback> feedbacks = feedbackService.getFeedbacksByEvent(eventId);
+
+        List<FeedbackResponse> response = feedbacks.stream()
+                .map(f -> convertToResponse(f, eventId, f.getUser() != null ? f.getUser().getId() : null))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
+
+    private FeedbackResponse convertToResponse(Feedback feedback, Long eventId, Long userId) {
+        FeedbackResponse dto = new FeedbackResponse();
+        dto.setId(feedback.getId());
+        dto.setEventId(eventId);
+        dto.setUserId(userId);
+        dto.setRating(feedback.getRating());
+        dto.setComment(feedback.getComment());
+        dto.setCreatedAt(feedback.getCreatedAt());
+        if (feedback.getUser() != null) {
+            dto.setUserName(feedback.getUser().getName());
+        }
+        return dto;
+    }
+}

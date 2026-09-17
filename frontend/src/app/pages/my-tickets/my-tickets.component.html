@@ -1,0 +1,37 @@
+<div class="page">
+  <app-header>
+    <a routerLink="/events">Events</a>
+  </app-header>
+
+  <div class="content">
+    <h1>My Tickets</h1>
+    <p class="subtitle">Your purchased event tickets</p>
+
+    <div class="loading" *ngIf="loading">Loading tickets...</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="empty" *ngIf="!loading && !error && tickets.length === 0">
+      You haven't purchased any tickets yet.
+      <a routerLink="/events">Browse events</a>
+    </div>
+
+    <div class="tickets-list" *ngIf="!loading && !error && tickets.length > 0">
+      <a class="ticket-card" *ngFor="let ticket of tickets" [routerLink]="['/events', ticket.eventId]">
+        <div class="ticket-left">
+          <div class="ticket-event">{{ ticket.eventTitle }}</div>
+          <div class="ticket-type">{{ ticket.ticketType }}</div>
+          <div class="ticket-date">Purchased: {{ ticket.purchasedAt | date:'mediumDate' }}</div>
+        </div>
+        <div class="ticket-right">
+          <div class="ticket-price">${{ ticket.price }}</div>
+          <span class="status" [class]="ticket.status.toLowerCase()">{{ ticket.status }}</span>
+          <button class="btn-cancel"
+                  *ngIf="ticket.status !== 'CANCELLED'"
+                  (click)="$event.preventDefault(); $event.stopPropagation(); cancelTicket(ticket.id)">
+            Cancel
+          </button>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

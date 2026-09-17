@@ -1,0 +1,50 @@
+/* Hero illustration animations for the landing page */
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+@keyframes floatFast {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.08; }
+  50%      { opacity: 0.16; }
+}
+
+@keyframes dayPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+.hero-illustration {
+  .float-slow { animation: floatSlow 6s ease-in-out infinite; }
+  .float-fast { animation: floatFast 4s ease-in-out infinite; }
+
+  .halo {
+    opacity: 0.08;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: haloPulse 5s ease-in-out infinite;
+  }
+
+  .card-a { animation: floatSlow 5s ease-in-out infinite; }
+  .card-b { animation: floatFast 4.5s ease-in-out 0.6s infinite; }
+  .badge  { animation: floatFast 4s ease-in-out 0.3s infinite; }
+
+  .active-day {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dayPulse 2.5s ease-in-out infinite;
+  }
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-illustration * {
+    animation: none !important;
+  }
+}

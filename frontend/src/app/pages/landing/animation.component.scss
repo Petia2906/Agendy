@@ -1,0 +1,18 @@
+@use './animations';
+
+:host {
+  display: contents;
+}
+
+.hero-illustration {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  overflow: visible;
+}
+
+@media (max-width: 860px) {
+  .hero-illustration {
+    max-width: 320px;
+  }
+}
